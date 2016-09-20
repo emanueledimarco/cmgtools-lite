@@ -23,7 +23,7 @@ removeJetReCalibration = getHeppyOption("removeJetReCalibration",False)
 doT1METCorr = getHeppyOption("doT1METCorr",True)
 forcedSplitFactor = getHeppyOption("splitFactor",-1)
 forcedFineSplitFactor = getHeppyOption("fineSplitFactor",-1)
-isTest = getHeppyOption("isTest",True)#False)
+isTest = getHeppyOption("isTest",False)#False)
 doLepCorr = getHeppyOption("doLepCorr",False)
 doPhotonCorr = getHeppyOption("doPhotonCorr",False)
 
@@ -33,8 +33,8 @@ diLepSkim = False
 singleLepSkim = False
 singleFatJetSkim = False
 singlePhotonSkim = False
-dibosonSkim = True #False
-vGammaSkim =False# True
+dibosonSkim = False
+vGammaSkim = True
 
 # --- MONOJET SKIMMING ---
 if signalSkim == True:
@@ -72,12 +72,12 @@ if dibosonSkim == True:
     lepAna.inclusive_electron_pt = 30
     lepAna.loose_electron_pt     = 30
 
-#if vGammaSkim == True:
-   ######################## #monoXFatJetAna.jetPt = 120
-   ######################## #monoJetCtrlFatJetSkim.minFatJets = 1
-   ######################## #gammaJetCtrlSkim.minPhotons = 1
-   ######################## #gammaJetCtrlSkim.minJets = 1
-   ######################## #photonAna.ptMin = 50
+if vGammaSkim == True:
+   monoXFatJetAna.jetPt = 120
+   monoJetCtrlFatJetSkim.minFatJets = 1
+   gammaJetCtrlSkim.minPhotons = 1
+   gammaJetCtrlSkim.minJets = 1
+   photonAna.ptMin = 50
     
 # --- Photon OR Electron SKIMMING ---
 #if photonOrEleSkim == True:
@@ -485,8 +485,10 @@ else:
     monoXPuppiJetAna.dataGT = "Spring16_25nsV6_DATA"
     monoXSubJetPuppiAna.mcGT = "Spring16_25nsV6_MC"
     monoXSubJetPuppiAna.dataGT = "Spring16_25nsV6_DATA"
+    monoXSubJetPuppiAna.DR = .8
     monoXSubJetSoftDropAna.mcGT = "Spring16_25nsV6_MC"
     monoXSubJetSoftDropAna.dataGT = "Spring16_25nsV6_DATA"
+    monoXSubJetSoftDropAna.DR = .8
 
 if removeJetReCalibration:
     ## NOTE: jets will still be recalibrated, since calculateSeparateCorrections is True,
@@ -502,7 +504,10 @@ if forcedSplitFactor>0 or forcedFineSplitFactor>0:
 if runData==False and not isTest: # MC all
     ### 25 ns 74X MC samples
     is50ns = False
-    mcSamples = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
+    if vGammaSkim==True:
+      mcSamples = mcSamples_zgamma#monojet_Asymptotic25ns
+    else:
+      mcSamples = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
     #if signalSkim:
         # full signal scan (many datasets!)
         # mcSamples += mcSamples_monojet_Asymptotic25ns_signals
@@ -583,10 +588,15 @@ elif test == 'synch-80X': # sync
         comp.files = [ 'root://eoscms//eos/cms/store/mc/RunIISpring16MiniAODv1/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/60000/00DD003D-4201-E611-A6F7-0CC47A745282.root' ]
         selectedComponents = [ comp ]
     else:
-        selectedComponents = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
+        if vGammaSkim==True:
+           selectedComponents = mcSamples_zgamma#monojet_Asymptotic25ns
+        else:
+           selectedComponents = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
+        #selectedComponents = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
     jetAna.smearJets       = False
     for comp in selectedComponents:
         comp.splitFactor = 1
+
         comp.fineSplitFactor = 1 if getHeppyOption("single") else 2
 elif test == '80X-Data':
     what = getHeppyOption("sample")
@@ -619,10 +629,10 @@ elif test == 'simone':
            #"root://xrootd.unl.edu//store/mc/RunIISpring16DR80/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext3-v1/60000/08078977-2F1F-E611-AF79-001E675053A5.root"
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext3-v1/00000/00A10CC4-4227-E611-BBF1-C4346BBCD528.root"
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv1/TT_TuneCUETP8M1_13TeV-powheg-pythia8-evtgen/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/4603CC0B-D012-E611-972B-90B11C06E1A0.root"
-           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/00000/04FB4BAA-3A33-E611-BC64-008CFA197A90.root",
+           "root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/00000/04FB4BAA-3A33-E611-BC64-008CFA197A90.root",
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/00000/9C6425C8-081C-E611-9F71-001E67E71A56.root",
            #"file:A8A803BC-CC17-E611-BA8C-02163E014550.root",
-           "root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1000_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/10000/3E743410-C82B-E611-8948-0025907FD40C.root",
+           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1000_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/10000/3E743410-C82B-E611-8948-0025907FD40C.root",
            #"root://cms-xrd-global.cern.ch//store/data/Run2016B/SinglePhoton/MINIAOD/PromptReco-v2/000/273/158/00000/00DD3222-261A-E611-9FD2-02163E011E34.root",
                  ],
            name="ZHLL125", isEmbed=False,
