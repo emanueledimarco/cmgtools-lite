@@ -74,11 +74,11 @@ class monoXFatJetAnalyzer( Analyzer ):
                             print "ERROR: I had to recompute jet corrections, and one jet pt or corr changed: old = %s, new = %s\n" % (told, tnew)
 
          
-        event.genFatJets = []
+        event.genFatJet = []
         if self.cfg_comp.isMC:
           for jet in allgenFatJets:
-            event.genFatJets.append(jet)
-            print "++ ", jet.pt()
+            event.genFatJet.append(jet)
+            #print "++ ", jet.pt()
 
         ## Apply jet selection
         event.fatJets     = []
