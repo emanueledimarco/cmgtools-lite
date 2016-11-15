@@ -7,9 +7,6 @@ kreator = ComponentCreator()
 
 ### common MC samples
 from CMGTools.RootTools.samples.samples_13TeV_RunIISpring16MiniAODv2 import *
-### DM MC samples
-#from CMGTools.RootTools.samples.samples_monojet_13TeV_74X_signals import *
-
 ### --- mc ---
 
 # --- 25 ns background samples ---
