@@ -34,6 +34,7 @@ class monoXSubJetsPuppiAnalyzer( Analyzer ):
 
         self.jetLepDR = self.cfg_ana.jetLepDR  if hasattr(self.cfg_ana, 'jetLepDR') else 0.5
         self.lepPtMin = self.cfg_ana.minLepPt  if hasattr(self.cfg_ana, 'minLepPt') else -1
+        self.fatJetCone = cfg_ana.DR if hasattr(self.cfg_ana, 'DR') else .8
 
 
     def declareHandles(self):
@@ -80,25 +81,60 @@ class monoXSubJetsPuppiAnalyzer( Analyzer ):
         event.subJetPuppi     = []
         event.subJetPuppiNoID = []
         event.customPuppiAK8 = []
-        jet_counter = 0. #to create the ak08Puppi...
-        totJetCounter = 0. #to avoid unreferenced variable problems (before the AK08 was outside of thr loop)
+        jetUsed = []
+        subJet_counter = 0 #counter for the second loop over the subjets
+        createdCustomAk08 = 0
+        jet_counter = 0 #to create the ak08Puppi...
+        totJetCounter = 0 #to avoid unreferenced variable problems (before the AK08 was outside of thr loop)
+        #r.gSystem.Load('libGenVector')
         for jet in allJets:
             ##print "+++++ ",(jet.correctedP4(1).pt()-jet.correctedP4(0).pt())
             totJetCounter += 1
+            #print jet.mass(), " ",jet.eta(), " ",jet.pt(), " " ,jet.phi()
             if self.testJetNoID( jet ): 
                 event.subJetPuppiNoID.append(jet.correctedP4(0)) 
                 if self.testJetID ( jet ):
                     #print "++++++++++++++++++++++ ", jet.pt()
-                    if jet_counter==0:
-                      puppiAK8 = jet.correctedP4(0)
-                    else:
-                      puppiAK8 += jet.correctedP4(0)
+                    #if jet_counter==0:
+                    #  puppiAK8 = jet.correctedP4(0)
+                    #else:
+                    #  puppiAK8 += jet.correctedP4(0)
                     event.subJetPuppi.append(jet.correctedP4(0))
+                    #jet_counter += 1
+            #print "+++++++++++++ ", len(allJets)
+                    subJet_counter = 0
+                    for jet1 in allJets:
+                      if subJet_counter==0 and jet_counter not in jetUsed:
+                        puppiAK8 = jet.correctedP4(0)
+                        createdCustomAk08 = 1
+                      dEta = jet1.correctedP4(0).eta()-jet.correctedP4(0).eta()
+                      dPhi = jet1.correctedP4(0).phi()-jet.correctedP4(0).phi()
+                      if dPhi >= math.pi:
+                        dPhi -= 2*math.pi
+                      elif dPhi < -math.pi:
+                        dPhi += 2*math.pi
+                      drSubJets = math.sqrt(dEta*dEta + dPhi*dPhi)
+                      #print "DR ", drSubJets
+                      if drSubJets<self.fatJetCone:
+                        if subJet_counter != jet_counter and subJet_counter not in jetUsed: #otherwis it will auto-append the initial subjet
+                          puppiAK8 += jet1.correctedP4(0)
+                        jetUsed.append(subJet_counter) #no need to reinizialize this array; it has to be empty just at the beginning of each event
+                    #  if createdCustomAk08==1:
+                    #    puppiAK8.massCorrected = monoXPuppiJetAnalyzer.puppiCorrector(puppiAK8)
+                    #    event.customPuppiAK8.append(puppiAK8)
+                    #    createdCustomAk08=0
+                      subJet_counter += 1
+                      #print drSubJets
+                      #print jet1.correctedP4(0).DeltaR(jet.correctedP4(0))
+                    if createdCustomAk08==1:
+                      puppiAK8.massCorrected = monoXPuppiJetAnalyzer.puppiCorrector(puppiAK8)
+                      event.customPuppiAK8.append(puppiAK8)
+                      createdCustomAk08=0
                     jet_counter += 1
-            if jet_counter>0 and totJetCounter==len(allJets):
+              #      if jet_counter>0 and totJetCounter==2:#len(allJets):
               #print "Filling custom AK08"
-              puppiAK8.massCorrected = monoXPuppiJetAnalyzer.puppiCorrector(puppiAK8) 
-              event.customPuppiAK8.append(puppiAK8)
+              #puppiAK8.massCorrected = monoXPuppiJetAnalyzer.puppiCorrector(puppiAK8) 
+              #event.customPuppiAK8.append(puppiAK8)
                     
         
         ## Associate jets to leptons

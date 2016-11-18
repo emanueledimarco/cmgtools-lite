@@ -30,8 +30,8 @@ WJetsToLNu_amcatnlo = [ WJetsToLNu ]
 GammaJets = GJets
 VV_VBosonGamma = VV_VGamma
 
-mcSamples_monojet_Asymptotic25ns = ZJetsToNuNu_MJ + VJets_MJ + Top_MJ + DiBosons_MJ + GJetsHT + EWKV2Jets
-mcSamples_diboson_Asymptotic25ns = TTBar #SingleTop + WJetsToLNu_HT + DiBosons_MJ# + TTBar
+mcSamples_monojet_Asymptotic25ns = ZJetsToNuNu_MJ + VJets_MJ + Top_MJ + DiBosons_MJ + QCDHT + GJetsHT
+mcSamples_diboson_Asymptotic25ns = SingleTop + WJetsToLNu_HT + DiBosons_MJ# + TTBar
 mcSamples_zgamma_Asymptotic25ns = TTBar_amcatnlo + WJetsToLNu_amcatnlo + QCDHT + GJetsHT + VV_VBosonGamma + TTGammaJets
 mcSamples_zgamma_Signal = VGamma_signal
 
