@@ -14,7 +14,7 @@ from CMGTools.RootTools.samples.autoAAAconfig import *
 #-------- SET OPTIONS AND REDEFINE CONFIGURATIONS -----------
 
 is50ns = getHeppyOption("is50ns",False)
-runData = getHeppyOption("runData",True)
+runData = getHeppyOption("runData",True)#False)
 scaleProdToLumi = float(getHeppyOption("scaleProdToLumi",-1)) # produce rough equivalent of X /pb for MC datasets
 saveSuperClusterVariables = getHeppyOption("saveSuperClusterVariables",True)
 saveFatJetIDVariables = getHeppyOption("saveFatJetIDVariables",True)
@@ -23,8 +23,8 @@ removeJetReCalibration = getHeppyOption("removeJetReCalibration",False)
 doT1METCorr = getHeppyOption("doT1METCorr",True)
 forcedSplitFactor = getHeppyOption("splitFactor",-1)
 forcedFineSplitFactor = getHeppyOption("fineSplitFactor",-1)
-isTest = getHeppyOption("isTest",False)
-doLepCorr = getHeppyOption("doLepCorr",False)
+isTest = getHeppyOption("isTest",False)#True)
+doLepCorr = getHeppyOption("doLepCorr",True)#False)
 doPhotonCorr = getHeppyOption("doPhotonCorr",True)#False)
 
 # Define skims
@@ -401,7 +401,7 @@ if False:
 
 if runData and not isTest: # For running on data
     ##run_ranges = [ (272021,275125) ]; useAAA=False; is50ns=False
-    run_ranges = [ (281085, 284068) ]; useAAA=False; is50ns=False
+    run_ranges = [ (272760, 284068) ]; useAAA=False; is50ns=False
     #print "Removing the SoftDrop and Puppi subjet collections (not yet in data)"
     #dmCoreSequence.remove(monoXSubJetPuppiAna)
     #dmCoreSequence.remove(monoXSubJetSoftDropAna)
@@ -412,6 +412,7 @@ if runData and not isTest: # For running on data
     ProcessingsAndRunRanges = []; Shorts = []
 
     
+
 #    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v1", [272021,272759] ) ); Shorts.append("PromptReco_v1")
 #    ProcessingsAndRunRanges.append( ("Run2016B-01Jul2016-v2",  [272760,273017] ) ); Shorts.append("01Jul2016-v2")
 #    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273150,275376] ) ); Shorts.append("PromptReco_v2")
@@ -419,9 +420,17 @@ if runData and not isTest: # For running on data
 #    ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("PromptReco_v2")
 #    ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276827,277420] ) ); Shorts.append("PromptReco_v2")
 #    ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277776,278808] ) ); Shorts.append("PromptReco_v1")
-    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v1", [281085,281201] ) ); Shorts.append("PromptReco_v1")
-    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v2", [281207,284035] ) ); Shorts.append("PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v3", [284036,284068] ) ); Shorts.append("PromptReco_v3")
+
+    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v1", [272760,272818] ) ); Shorts.append("23Sep2016_v1")
+    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v3", [273017,275376] ) ); Shorts.append("23Sep2016-v3")
+    ProcessingsAndRunRanges.append( ("Run2016C-23Sep2016-v1", [275656,276283] ) ); Shorts.append("23Sep2016_v1")
+    ####ProcessingsAndRunRanges.append( ("Run2016D-23Sep2016-v1", [276315,276811] ) ); Shorts.append("23Sep2016_v1")
+    ####ProcessingsAndRunRanges.append( ("Run2016E-23Sep2016-v1", [276831,277420] ) ); Shorts.append("23Sep2016_v1")
+    ####ProcessingsAndRunRanges.append( ("Run2016F-23Sep2016-v1", [277932,278808] ) ); Shorts.append("23Sep2016_v1")
+    ####ProcessingsAndRunRanges.append( ("Run2016G-23Sep2016-v1", [278820,280385] ) ); Shorts.append("23Sep2016_v1")
+    ####ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v1", [281085,281201] ) ); Shorts.append("PromptReco_v1")
+    ####ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v2", [281207,284035] ) ); Shorts.append("PromptReco_v2")
+    ####ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v3", [284036,284068] ) ); Shorts.append("PromptReco_v3")
     ##ProcessingsAndRunRanges.append( ("Run2016G-PromptReco-v1", [278815,278820] ) ); Shorts.append("PromptReco_v1")
 
     if diLepSkim == True:
@@ -432,8 +441,8 @@ if runData and not isTest: # For running on data
         DatasetsAndTriggers.append( ("SingleMuon", triggers_1mu_iso + triggers_mumu_iso + triggers_mumu_ss + triggers_mumu_ht + triggers_3mu + triggers_3mu_alt) )
         #DatasetsAndTriggers.append( ("SinglePhoton",   triggers_SinglePhoton) )
     if vGammaSkim == True:
-        DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
-        #DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
+        #DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
+        DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
     if singlePhotonSkim == True:
         DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
     if signalSkim == True:
