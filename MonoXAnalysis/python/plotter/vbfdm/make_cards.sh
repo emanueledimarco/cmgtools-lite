@@ -68,7 +68,7 @@ fi
 
 if [[ "$1" == "all" || "$1" == "SR" ]] ; then
     OPTIONS_SR="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/friends_SR/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-sync.txt vbfdm/vbfdm.txt ${VARIABLE} $SYST $OPTIONS_SR --od ${OUTNAME}/${PRESEL}/$VARNAME --processesFromCR ZNuNu,W --correlateProcessCR 'W,ZNuNu,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_SRSR.root' --region SR --unbinned"
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-sync.txt vbfdm/vbfdm.txt ${VARIABLE} $SYST $OPTIONS_SR --od ${OUTNAME}/${PRESEL}/$VARNAME --processesFromCR ZNuNu,EWKZNuNu,W,EWKW --correlateProcessCR 'W,ZNuNu,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_SRSR.root' --region SR --unbinned"
     echo "===> EXECUTING " $command
     eval $command
     echo "Done at $(date)"
@@ -76,7 +76,7 @@ fi;
 
 if [[ "$1" == "all" || "$1" == "ZM" ]] ; then
     OPTIONS_ZM="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/friends_VM/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_LepTightLoose*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/zmumu.txt ${VARIABLE} $SYST $OPTIONS_ZM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZMCR.root' --region ZM --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/zmumu.txt ${VARIABLE} $SYST $OPTIONS_ZM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZMCR.root' --correlateProcessCR 'EWKZNuNu,EWKZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZMCR.root'  --region ZM --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command    
     echo "Done at $(date)"
@@ -85,7 +85,7 @@ fi;
 
 if [[ "$1" == "all" || "$1" == "ZE" ]] ; then
     OPTIONS_ZE="${OPTIONS} -P \"$TREELEP\" -F mjvars/t \"$TREELEP/friends_VE/evVarFriend_{cname}.root\" --FMC sf/t \"$TREELEP/friends/sfFriend_{cname}.root\" -W 'puw*SF_LepTightLoose*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/zee.txt ${VARIABLE} $SYST $OPTIONS_ZE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZECR.root' --region ZE --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/zee.txt ${VARIABLE} $SYST $OPTIONS_ZE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZECR.root' --correlateProcessCR 'EWKZNuNu,EWKZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZECR.root' --region ZE --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command    
     echo "Done at $(date)"
@@ -93,7 +93,7 @@ fi;
 
 if [[ "$1" == "all" || "$1" == "WM" ]] ; then
     OPTIONS_WM="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/friends_VM/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_LepTight*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/wmunu.txt ${VARIABLE} $SYST $OPTIONS_WM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WMCR.root' --region WM --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/wmunu.txt ${VARIABLE} $SYST $OPTIONS_WM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WMCR.root' --correlateProcessCR 'EWKW,EWKW,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WMCR.root' --region WM --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command
     echo "Done at $(date)"
@@ -101,7 +101,7 @@ fi;
 
 if [[ "$1" == "all" || "$1" == "WE" ]] ; then
     OPTIONS_WE="${OPTIONS} -P \"$TREELEP\" -F mjvars/t \"$TREELEP/friends_VE/evVarFriend_{cname}.root\" --FMC sf/t \"$TREELEP/friends/sfFriend_{cname}.root\" -W 'puw*SF_LepTight*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/wenu.txt ${VARIABLE} $SYST $OPTIONS_WE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WECR.root' --region WE --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/wenu.txt ${VARIABLE} $SYST $OPTIONS_WE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WECR.root' --correlateProcessCR 'EWKW,EWKW,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WECR.root' --region WE --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command
     echo "Done at $(date)"

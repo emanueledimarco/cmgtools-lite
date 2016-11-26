@@ -500,14 +500,15 @@ for mass in masses:
         datacard.write('observation -1\n')
         datacard.write('##----------------------------------\n')
         datacard.write('##----------------------------------\n')
+        corr_procs = []
         if len(options.correlateProcessCR) and options.region not in ['SR']:
             for p0 in options.correlateProcessCR:
                 pars = p0.split(",")
-                corr_proc = pars[0]
-                datacard.write('bin                          '+(" ".join([kpatt % binname  for p in procs + [""]]))+"\n")
-                datacard.write('process                      '+(" ".join([kpatt % p        for p in procs]))+(kpatt % corr_proc)+"\n")
-                datacard.write('process                      '+(" ".join([kpatt % iproc[p] for p in procs]))+(kpatt % str(len(procs)+1))+"\n")
-                datacard.write('rate                         '+(" ".join([kpatt % myunbinnedyields[p] for p in procs]))+(kpatt % "1")+"\n")
+                corr_procs.append(pars[0])
+            datacard.write('bin                          '+(" ".join([kpatt % binname  for p in procs + corr_procs]))+"\n")
+            datacard.write('process                      '+(" ".join([kpatt % p        for p in procs]))+(" ".join([kpatt % cp for cp in corr_procs]))+"\n")
+            datacard.write('process                      '+(" ".join([kpatt % iproc[p] for p in procs]))+(" ".join([kpatt % str(len(procs)+corr_procs.index(cp)+1) for cp in corr_procs]))+"\n")
+            datacard.write('rate                         '+(" ".join([kpatt % myunbinnedyields[p] for p in procs]))+(" ".join([kpatt % "1" for cp in corr_procs]))+"\n")
         else:
             datacard.write('bin                          '+(" ".join([kpatt % binname  for p in procs]))+"\n")
             datacard.write('process                      '+(" ".join([kpatt % p        for p in procs]))+"\n")
@@ -526,8 +527,7 @@ for mass in masses:
         datacard.write('process                      '+(" ".join([kpatt % iproc[p] for p in procs]))+"\n")
         datacard.write('rate                         '+(" ".join([fpatt % myyields[p] for p in procs]))+"\n")
         datacard.write('##----------------------------------\n')
-    dummy_syst = (kpatt % '-') if (len(options.correlateProcessCR) and options.region not in ['SR']) else ''
-    #dummy_syst = '' if not len(options.correlateProcessCR) else (kpatt % '-')
+    dummy_syst = " ".join([kpatt % "-" for cp in corr_procs]) if (len(options.correlateProcessCR) and options.region not in ['SR']) else ''
     for name,effmap in systs.iteritems():
         datacard.write(('%-25s lnN' % name) + " ".join([kpatt % effmap[p]   for p in procs]) + dummy_syst +"\n")
     for name,(effmap0,effmap12,mode) in systsEnv.iteritems():
