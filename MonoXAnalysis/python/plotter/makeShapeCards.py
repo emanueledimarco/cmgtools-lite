@@ -67,14 +67,14 @@ def addCorrelatedShape(process,var,region,workspace,hist):
     _import(phist,ROOT.RooFit.RecycleConflictNodes())
     _import(norm,ROOT.RooFit.RecycleConflictNodes())
 
-def addCorrelatedShapeFromSR(process,var,thisregion,correlatedRegion,workspace,hist,alphahist_fullerr,filealpha):
+def addCorrelatedShapeFromSR(process,processSR,var,thisregion,correlatedRegion,workspace,hist,alphahist_fullerr,filealpha):
     tfile = ROOT.TFile.Open(filealpha)
     h_alphahist_fullerr = tfile.Get(alphahist_fullerr)
     h_alphahist_fullerr.SetDirectory(None)
 
     crbins = []; rbins = []; rerrbins = [];
     for b in range(1,hist.GetNbinsX()+1):
-        crbin_rrv = ROOT.RooRealVar(process+'_'+correlatedRegion+'_bin'+str(b),"",hist.GetBinContent(b), 0., hist.GetBinContent(b)*5.0)
+        crbin_rrv = ROOT.RooRealVar(processSR+'_'+correlatedRegion+'_bin'+str(b),"",hist.GetBinContent(b), 0., hist.GetBinContent(b)*5.0)
         crbins.append(crbin_rrv)
         # central value of the transfer factor
         rbin_rrv = ROOT.RooRealVar('r_'+process+'_'+thisregion+'_bin'+str(b),"",h_alphahist_fullerr.GetBinContent(b))
@@ -490,7 +490,7 @@ for mass in masses:
             datacard.write(('shapes %-10s %-7s %-20s' % (proc,binname,wsfile))+" w:"+ proc + "_" + options.region)
             if myunbinnedyields[proc]==-1: datacard.write("%30s" % ("     w:"+ proc + "_" + options.region + "$SYSTEMATIC\n"))
             else:  datacard.write("\n")
-        if len(options.correlateProcessCR):
+        if len(options.correlateProcessCR) and options.region not in ['SR']:
             for p0 in options.correlateProcessCR:
                 corr_proc = p0.split(",")[0]
                 datacard.write(('shapes %-10s %-7s %-20s' % (corr_proc,binname,wsfile))+" w:"+ corr_proc + "_" + options.region+"\n")
@@ -500,7 +500,7 @@ for mass in masses:
         datacard.write('observation -1\n')
         datacard.write('##----------------------------------\n')
         datacard.write('##----------------------------------\n')
-        if len(options.correlateProcessCR):
+        if len(options.correlateProcessCR) and options.region not in ['SR']:
             for p0 in options.correlateProcessCR:
                 pars = p0.split(",")
                 corr_proc = pars[0]
@@ -526,7 +526,8 @@ for mass in masses:
         datacard.write('process                      '+(" ".join([kpatt % iproc[p] for p in procs]))+"\n")
         datacard.write('rate                         '+(" ".join([fpatt % myyields[p] for p in procs]))+"\n")
         datacard.write('##----------------------------------\n')
-    dummy_syst = '' if not len(options.correlateProcessCR) else (kpatt % '-')
+    dummy_syst = (kpatt % '-') if (len(options.correlateProcessCR) and options.region not in ['SR']) else ''
+    #dummy_syst = '' if not len(options.correlateProcessCR) else (kpatt % '-')
     for name,effmap in systs.iteritems():
         datacard.write(('%-25s lnN' % name) + " ".join([kpatt % effmap[p]   for p in procs]) + dummy_syst +"\n")
     for name,(effmap0,effmap12,mode) in systsEnv.iteritems():
@@ -562,8 +563,8 @@ for mass in masses:
     if len(options.correlateProcessCR):
         for p0 in options.correlateProcessCR:
             pars = p0.split(",")
-            proc = pars[0]; corr_region = pars[1]; alphahist = pars[2]; filealpha = pars[3]
-            addCorrelatedShapeFromSR(proc,var,options.region,corr_region,workspace,h,alphahist,filealpha)
+            proc = pars[0]; procSR = pars[1]; corr_region = pars[2]; alphahist = pars[3]; filealpha = pars[4]
+            addCorrelatedShapeFromSR(proc,procSR,var,options.region,corr_region,workspace,h,alphahist,filealpha)
     
     for n,h in report.iteritems():
         if options.verbose > 0: print "\t%s (%8.3f events)" % (h.GetName(),h.Integral())
