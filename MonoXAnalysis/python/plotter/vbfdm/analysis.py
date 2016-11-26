@@ -218,20 +218,24 @@ if __name__ == "__main__":
                 systsUpL   = ['lepID_up']
                 systsDownL = ['lepID_down']
              
-                systsUpG   = ['QCD_renScaleUp', 'QCD_facScaleUp', 'QCD_pdfUp', 'EWK_up']
-                systsDownG = ['QCD_renScaleDown', 'QCD_facScaleDown', 'QCD_pdfDown', 'EWK_down']
+                systsUpTheo   = ['QCD_renScaleUp', 'QCD_facScaleUp', 'QCD_pdfUp', 'EWK_up']
+                systsDownTheo = ['QCD_renScaleDown', 'QCD_facScaleDown', 'QCD_pdfDown', 'EWK_down']
              
                 titles = {'ZLL':'R_{Z(#mu#mu)}',
                           'W':'R_{W(#mu#mu)}'}
              
                 systs={}
              
-                if den_proc=='ZLL' or den_proc=='W':
+                if num_proc=='ZNuNu' and den_proc=='W': # in this case it is Z/W (SR), so only theo systematics play role
+                    # for the time being, do not have theo systs on other than recoil
+                    systs[(den_proc,'CR','up')]=[] #systsUpTheo
+                    systs[(den_proc,'CR','down')]=[] #systsDownTheo
+                elif den_proc=='ZLL' or den_proc=='W':
                     systs[(den_proc,'CR','up')]=systsUpL
                     systs[(den_proc,'CR','down')]=systsDownL
                 elif den_proc=='GJetsHT':
-                    systs[(den_proc,'CR','up')]=systsUpG
-                    systs[(den_proc,'CR','down')]=systsDownG
+                    systs[(den_proc,'CR','up')]=systsUpTheo
+                    systs[(den_proc,'CR','down')]=systsDownTheo
                 else:
                     print "ERROR! Numerator processes can be only ZLL or W or GJetsHT"
                     exit()
@@ -258,6 +262,7 @@ if __name__ == "__main__":
                 outname = outdir+"/"+s+"/rfactors_"+options.transferFactor+"_"+num_proc+num_sel+"_Over_"+tf[3]+den_sel+".root"
                 outfile = rt.TFile(outname,"RECREATE")
              
+                print systs
                 rfm = RFactorMaker(options.transferFactor,num_file,den_file,num_proc,den_proc,systs)
                 hists = rfm.computeFullError(outfile)
                 rfac_full = rfm.computeRFactors(hists,outfile,"full")
