@@ -10,7 +10,7 @@ MODULES.append( ('vars_mj', EventVarsMonojet()) )
 
 from CMGTools.TTHAnalysis.tools.vertexWeightFriend import VertexWeightFriend
 pufile_mc="/afs/cern.ch/work/e/emanuele/public/monox/pileup/pileup_profile_Spring16.root"
-pufile_data="/afs/cern.ch/work/e/emanuele/public/monox/pileup/pileup_profile_runs_271036_279931.root"
+pufile_data="/afs/cern.ch/work/e/emanuele/public/monox/pileup/pileup_profile_runs_271036_284044.root"
 MODULES.append ( ('puWeights', VertexWeightFriend(pufile_mc,pufile_data,"pu_mc","pileup",name="puw",verbose=True,vtx_coll_to_reweight="nTrueInt") ) )
 
 pathvetolists="/afs/cern.ch/work/e/emanuele/public/monox/met_vetolists/"
