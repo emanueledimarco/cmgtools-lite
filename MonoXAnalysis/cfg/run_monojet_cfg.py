@@ -27,9 +27,9 @@ doLepCorr = getHeppyOption("doLepCorr",True)
 doPhotonCorr = getHeppyOption("doPhotonCorr",True)
 
 # Define skims
-signalSkim = False
+signalSkim = True
 diLepSkim = False
-singleLepSkim = True
+singleLepSkim = False
 singlePhotonSkim = False
 
 # --- MONOJET SKIMMING ---
@@ -223,7 +223,8 @@ if scaleProdToLumi>0: # select only a subset of a sample, corresponding to a giv
         c.splitFactor = len(c.files)
         c.fineSplitFactor = 1
 
-json = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt"
+#json = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt"
+json = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/ReReco/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 if False:
     is50ns = False
     selectedComponents = PrivateSamplesData
@@ -247,13 +248,22 @@ if runData and not isTest: # For running on data
     # ProcessingsAndRunRanges.append( ("Run2015D-16Dec2015-v1", [256630,260627] ) ); Shorts.append("Run2015D_16Dec")
     
     # --- 2016 DATA ---
-    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v1", [272023,273146] ) ); Shorts.append("Run2016B_PromptReco_v1")
-    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273150,275376] ) ); Shorts.append("Run2016B_PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016C-PromptReco-v2", [275420,276283] ) ); Shorts.append("Run2016C_PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("Run2016D_PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276830,277420] ) ); Shorts.append("Run2016E_PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277820,278808] ) ); Shorts.append("Run2016F_PromptReco_v1")
-    ProcessingsAndRunRanges.append( ("Run2016G-PromptReco-v1", [278816,280385] ) ); Shorts.append("Run2016G_PromptReco_v1")
+    # Prompt reco, substituted by 23Sep2016 re-reco for B-G
+    # ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v1", [272023,273146] ) ); Shorts.append("Run2016B_PromptReco_v1")
+    # ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273150,275376] ) ); Shorts.append("Run2016B_PromptReco_v2")
+    # ProcessingsAndRunRanges.append( ("Run2016C-PromptReco-v2", [275420,276283] ) ); Shorts.append("Run2016C_PromptReco_v2")
+    # ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("Run2016D_PromptReco_v2")
+    # ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276830,277420] ) ); Shorts.append("Run2016E_PromptReco_v2")
+    # ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277820,278808] ) ); Shorts.append("Run2016F_PromptReco_v1")
+    # ProcessingsAndRunRanges.append( ("Run2016G-PromptReco-v1", [278816,280385] ) ); Shorts.append("Run2016G_PromptReco_v1")
+
+    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v2", [272760,273017] ) ); Shorts.append("Run2016B-23Sep2016-v2")
+    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v3", [273150,275376] ) ); Shorts.append("Run2016B-23Sep2016-v3")
+    ProcessingsAndRunRanges.append( ("Run2016C-23Sep2016-v1", [275656,276283] ) ); Shorts.append("Run2016C-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016D-23Sep2016-v1", [276315,276811] ) ); Shorts.append("Run2016D-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016E-23Sep2016-v1", [276831,277420] ) ); Shorts.append("Run2016E-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016F-23Sep2016-v1", [277932,278808] ) ); Shorts.append("Run2016F-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016G-23Sep2016-v1", [278820,280385] ) ); Shorts.append("Run2016G-23Sep2016-v1")
     ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v1", [281010,281202] ) ); Shorts.append("Run2016H_PromptReco_v1")
     ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v2", [281207,284035] ) ); Shorts.append("Run2016H_PromptReco_v2")
     ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v3", [284036,284068] ) ); Shorts.append("Run2016H_PromptReco_v3")
