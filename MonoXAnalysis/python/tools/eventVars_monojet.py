@@ -1,6 +1,7 @@
 from CMGTools.TTHAnalysis.treeReAnalyzer import *
 from CMGTools.MonoXAnalysis.tools.PileUpReWeighter import PileUpReWeighter
 from CMGTools.VVResonances.tools.BTagEventWeights import * 
+from CMGTools.MonoXAnalysis.tools.MEMVars import *
 from PhysicsTools.Heppy.physicsutils.PuJetIDWP import PuJetIDWP
 import types
 import numpy as np
@@ -10,7 +11,8 @@ BTagReweight = lambda : BTagEventWeights('btagsf',os.path.expandvars("${CMSSW_BA
 class EventVarsMonojet:
     def __init__(self):
         self.branches = [ "nMu10V", "nMu20T", "nEle10V", "nEle40T", "nTau18V", "nGamma15V", "nGamma175T", "nBTag20",
-                          "dphijj", "dphijm", "weight", "events_ntot", "recoil_pt", "recoil_phi","SF_BTag"
+                          "dphijj", "dphijm", "weight", "events_ntot", "recoil_pt", "recoil_phi","SF_BTag",
+                          "Dkin_HJJ_VBF","Dfull_HJJ_VBF","PgPq2"
                           ]
 #        vbfHiggsToInvVars = [ "dphijmAllJets", "vbfTaggedJet_deltaEta", "vbfTaggedJet_invMass", 
 #                              "vbfTaggedJet_leadJetPt", "vbfTaggedJet_trailJetPt", "vbfTaggedJet_leadJetEta", "vbfTaggedJet_trailJetEta" 
@@ -19,6 +21,7 @@ class EventVarsMonojet:
         # dPhi(jet,MET) using all jets, not just the leading 4
         #self.branches = self.branches + vbfHiggsToInvVars
         self._btagreweight = BTagReweight()
+        self.MEMs = MECalculator(13.0,125.0)
     def initSample(self,region,sample_nevt):
         self.region = region
         self.sample_nevt = sample_nevt        
@@ -122,6 +125,7 @@ class EventVarsMonojet:
 
         ### lepton-jet cleaning
         # Define the loose leptons to be cleaned
+        cleanJets = []
         ret["iL"] = []
         for il,lep in enumerate(leps):
             if self.lepIdVeto(lep):
@@ -165,6 +169,7 @@ class EventVarsMonojet:
             jet = alljets[idx]
             # only save in the jetClean collection the jets with pt > 30 GeV
             if jet.pt < 30: continue
+            cleanJets.append(jet)
             nAllJets30 += 1
             if jet._central: nJetCleanCentral += 1
             else: nJetCleanFwd += 1
@@ -279,6 +284,12 @@ class EventVarsMonojet:
             if not t._clean: continue
             if not self.tauIdVeto(t): continue
             ret["nTauClean18V"] += 1
+
+        # VBF MELA
+        self.MEMs.fillMEs(recoil,cleanJets[0:2],cleanJets[2:])
+        ret["Dkin_HJJ_VBF"] = self.MEMs.KDs["D_HJJ^VBF"]
+        ret["Dfull_HJJ_VBF"] = self.MEMs.KDs["D_VBF2J"] 
+        ret["PgPq2"] = self.MEMs.KDs["PgPq2"]
 
         ### return
         fullret = {}
