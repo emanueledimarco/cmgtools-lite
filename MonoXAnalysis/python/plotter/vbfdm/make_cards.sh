@@ -5,6 +5,7 @@ if [[ "$HOSTNAME" == "cmsphys06" ]]; then
     J=6;
 elif [[ "$HOSTNAME" == "pccmsrm29.cern.ch" ]]; then
     TBASE="/u2/emanuele/";
+    #TBASE="/u2/mciprian/";
     J=4;
 else
     TBASE="/afs/cern.ch/work/e/emanuele/TREES/";
@@ -13,6 +14,21 @@ fi
 
 METSKIM="TREES_MET_80X_V4"
 LEPSKIM="TREES_1LEP_80X_V4"
+
+EVVARFRIEND_DIR_SR="friends_SR"
+EVVARFRIEND_DIR_ZM="friends_VM"
+EVVARFRIEND_DIR_ZE="friends_VE"
+EVVARFRIEND_DIR_WM="friends_VM"
+EVVARFRIEND_DIR_WE="friends_VE"
+
+#####################
+# FIX ME, for now using MET dataset also for electron region
+#LEPSKIM="TREES_MET_80X_V4"
+####################################
+# use met trigger also for electron in Wenu, but remember to remove it when tests are done
+#SF_TRIGMET="*SF_trigmetnomu"
+###################################
+
 
 TREEMET="${TBASE}/$METSKIM"
 TREELEP="${TBASE}/$LEPSKIM"
@@ -26,19 +42,27 @@ echo "Normalizing to ${LUMI}/fb";
 if [[ "X$1" == "X" ]]; then echo "Provide selection step!"; exit; fi
 PRESEL="$1"; shift
 echo "Using inputs for preselection ${PRESEL}";
+if [[ "X$1" == "X" ]]; then echo "Provide variables to be used (detajj, mjj, dphijm, dphijj)!"; exit; fi
+VAR="$1"; shift
+echo "Using ${VAR} for shape analysis";
+
 
 OPTIONS=" --s2v -j $J -l ${LUMI} -f -X trigger -U ${PRESEL} "
+####################################################
+#for now do not pass -U, I want all the selection, but presel will be vbfjets because it is the folder name used by default, will fix all of this
+#OPTIONS=" --s2v -j $J -l ${LUMI} -f -X trigger "
 
 SYST="vbfdm/systsEnv.txt"
 
 VARIABLE=""
+formula=""
 
-VARNAME="detajj_fullsel"
-if [[ "$PRESEL" == "full_sel" ]]; then 
-    VARIABLE="'abs(JetClean1_eta-JetClean2_eta)' '[1,1.5,2,2.5,3,3.5,4,4.5,5,6,10]'"
-else
-    VARIABLE="'abs(JetClean1_eta-JetClean2_eta)' '[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,6,10]'"
-fi;
+# VARNAME="detajj_fullsel"
+# if [[ "$PRESEL" == "full_sel" ]]; then 
+#     VARIABLE="'abs(JetClean1_eta-JetClean2_eta)' '[1,1.5,2,2.5,3,3.5,4,4.5,5,6,10]'"
+# else
+#     VARIABLE="'abs(JetClean1_eta-JetClean2_eta)' '[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,6,10]'"
+# fi;
 
 # VARNAME="mjj_fullsel"
 # if [[ "$PRESEL" == "full_sel" ]]; then
@@ -47,12 +71,44 @@ fi;
 #     VARIABLE="'mass_2(JetClean1_pt,JetClean1_eta,JetClean1_phi,0.,JetClean2_pt,JetClean2_eta,JetClean2_phi,0.)' '[0,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2250,2500,2750,3000,3500,4000]'"
 # fi
 
+
+if [[ "$VAR" == "detajj" ]]; then 
+    VARNAME="detajj_fullsel"
+    #VARIABLE="'abs(JetClean1_eta-JetClean2_eta)' '[0,2.5,3,3.5,4,4.5,5,6,10]'"
+    #VARIABLE="'abs(JetClean1_eta-JetClean2_eta)' '[3.5,4,4.5,5,6,10]'"
+    binning=`cat vbfdm/common_plots.txt | grep -v \#detajj_fullsel | grep detajj_fullsel | awk '{print $4 }'`
+    formula="abs(JetClean1_eta-JetClean2_eta)"
+elif [[ "$VAR" == "mjj" ]]; then 
+    VARNAME="mjj_fullsel"
+    #VARIABLE="'mass_2(JetClean1_pt,JetClean1_eta,JetClean1_phi,0.,JetClean2_pt,JetClean2_eta,JetClean2_phi,0.)' '[1000,1250,1500,1750,2000,2500,3000]'"
+    #VARIABLE="'mass_2(JetClean1_pt,JetClean1_eta,JetClean1_phi,0.,JetClean2_pt,JetClean2_eta,JetClean2_phi,0.)' '[1100,1200,1400,1600,1800,2200,2600,3000,4000]'"
+    binning=`cat vbfdm/common_plots.txt | grep -v \#mjj_fullsel | grep mjj_fullsel | awk '{print $4 }'`
+    formula="mass_2(JetClean1_pt,JetClean1_eta,JetClean1_phi,0.,JetClean2_pt,JetClean2_eta,JetClean2_phi,0.)"
+else
+    echo "variable $VAR not availale. Exiting!"; exit;
+fi
+
+if [[ "$2" == "1bin" ]]; then
+    # with 1 binning we have binning = 1,XXX,YYY ; must get [XXX,YYY]	
+    # symbol # removes the shortest pattern matching '1,' from the beginning 
+    binning="[${binning#1,}]"
+fi
+
+VARIABLE="'${formula}' '${binning}'"
+
 # VARNAME="detajj_mjj_binned"
 # if [[ "$PRESEL" == "full_sel" ]]; then
 #     VARIABLE="NOTIMPL"
 # else
 #     VARIABLE="'abs(JetClean1_eta-JetClean2_eta):mass_2(JetClean1_pt,JetClean1_eta,JetClean1_phi,0.,JetClean2_pt,JetClean2_eta,JetClean2_phi,0.)' '30,0,4000,30,0,10'"
 # fi
+
+
+########################################
+# FIX ME, for now using one bin
+########################################
+#VARIABLE="'mass_2(JetClean1_pt,JetClean1_eta,JetClean1_phi,0.,JetClean2_pt,JetClean2_eta,JetClean2_phi,0.)' '[1100,4000]'"
+
 
 test -d $OUTNAME/$PRESEL/$VARNAME || mkdir -p $OUTNAME/$PRESEL/$VARNAME
 
@@ -66,42 +122,42 @@ if [[ "$2" == "twodim" ]]; then
 OPTIONS="${OPTIONS} --2d-binning-function 10:vbfdm_2Dto1D"
 fi
 
+
 if [[ "$1" == "all" || "$1" == "SR" ]] ; then
-    OPTIONS_SR="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/friends_SR/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-sync.txt vbfdm/vbfdm.txt ${VARIABLE} $SYST $OPTIONS_SR --od ${OUTNAME}/${PRESEL}/$VARNAME --processesFromCR ZNuNu,EWKZNuNu,W,EWKW --correlateProcessCR 'W,ZNuNu,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_SRSR.root' --region SR --unbinned"
+    OPTIONS_SR="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/${EVVARFRIEND_DIR_SR}/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-sync.txt vbfdm/vbfdm.txt ${VARIABLE} $SYST $OPTIONS_SR --od ${OUTNAME}/${PRESEL}/$VARNAME --processesFromCR ZNuNu,EWKZNuNu,W,EWKW --correlateProcessCR 'W,ZNuNu,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_SRSR.root' --correlateProcessCR 'EWKW,EWKZNuNu,SR,rfac_EWKW_full,templates/${PRESEL}/rfactors_${VARNAME}_EWKZNuNuSR_Over_SRSR.root' --region SR --unbinned"
     echo "===> EXECUTING " $command
     eval $command
     echo "Done at $(date)"
 fi;
 
 if [[ "$1" == "all" || "$1" == "ZM" ]] ; then
-    OPTIONS_ZM="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/friends_VM/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_LepTightLoose*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/zmumu.txt ${VARIABLE} $SYST $OPTIONS_ZM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZMCR.root' --correlateProcessCR 'EWKZNuNu,EWKZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZMCR.root'  --region ZM --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
+    OPTIONS_ZM="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/${EVVARFRIEND_DIR_ZM}/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_LepTightLoose*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/zmumu.txt ${VARIABLE} $SYST $OPTIONS_ZM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZMCR.root' --correlateProcessCR 'EWKZNuNu,EWKZNuNu,SR,rfac_EWKZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_EWKZNuNuSR_Over_ZMCR.root'  --region ZM --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command    
     echo "Done at $(date)"
 fi;
 
-
 if [[ "$1" == "all" || "$1" == "ZE" ]] ; then
-    OPTIONS_ZE="${OPTIONS} -P \"$TREELEP\" -F mjvars/t \"$TREELEP/friends_VE/evVarFriend_{cname}.root\" --FMC sf/t \"$TREELEP/friends/sfFriend_{cname}.root\" -W 'puw*SF_LepTightLoose*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/zee.txt ${VARIABLE} $SYST $OPTIONS_ZE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZECR.root' --correlateProcessCR 'EWKZNuNu,EWKZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZECR.root' --region ZE --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
+    OPTIONS_ZE="${OPTIONS} -P \"$TREELEP\" -F mjvars/t \"$TREELEP/${EVVARFRIEND_DIR_ZE}/evVarFriend_{cname}.root\" --FMC sf/t \"$TREELEP/friends/sfFriend_{cname}.root\" -W 'puw*SF_LepTightLoose*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/zee.txt ${VARIABLE} $SYST $OPTIONS_ZE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'ZNuNu,ZNuNu,SR,rfac_ZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_ZNuNuSR_Over_ZECR.root' --correlateProcessCR 'EWKZNuNu,EWKZNuNu,SR,rfac_EWKZLL_full,templates/${PRESEL}/rfactors_${VARNAME}_EWKZNuNuSR_Over_ZECR.root' --region ZE --unbinned --xp ZLL,EWKZLL --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command    
     echo "Done at $(date)"
 fi;
 
 if [[ "$1" == "all" || "$1" == "WM" ]] ; then
-    OPTIONS_WM="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/friends_VM/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_LepTight*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/wmunu.txt ${VARIABLE} $SYST $OPTIONS_WM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WMCR.root' --correlateProcessCR 'EWKW,EWKW,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WMCR.root' --region WM --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
+    OPTIONS_WM="${OPTIONS} -P \"$TREEMET\" -F mjvars/t \"$TREEMET/${EVVARFRIEND_DIR_WM}/evVarFriend_{cname}.root\" --FMC sf/t \"$TREEMET/friends/sfFriend_{cname}.root\" -W 'puw*SF_trigmetnomu*SF_LepTight*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-muonCR.txt vbfdm/wmunu.txt ${VARIABLE} $SYST $OPTIONS_WM --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WMCR.root' --correlateProcessCR 'EWKW,EWKW,SR,rfac_EWKW_full,templates/${PRESEL}/rfactors_${VARNAME}_EWKWSR_Over_WMCR.root' --region WM --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command
     echo "Done at $(date)"
 fi;
 
 if [[ "$1" == "all" || "$1" == "WE" ]] ; then
-    OPTIONS_WE="${OPTIONS} -P \"$TREELEP\" -F mjvars/t \"$TREELEP/friends_VE/evVarFriend_{cname}.root\" --FMC sf/t \"$TREELEP/friends/sfFriend_{cname}.root\" -W 'puw*SF_LepTight*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
-    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/wenu.txt ${VARIABLE} $SYST $OPTIONS_WE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WECR.root' --correlateProcessCR 'EWKW,EWKW,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WECR.root' --region WE --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
+    OPTIONS_WE="${OPTIONS} -P \"$TREELEP\" -F mjvars/t \"$TREELEP/${EVVARFRIEND_DIR_WE}/evVarFriend_{cname}.root\" --FMC sf/t \"$TREELEP/friends/sfFriend_{cname}.root\" -W 'puw*SF_LepTight*SF_BTag*SF_NLO_QCD*SF_NLO_EWK' "
+    command="python makeShapeCards.py ${DOFILE} vbfdm/mca-80X-electronCR.txt vbfdm/wenu.txt ${VARIABLE} $SYST $OPTIONS_WE --od ${OUTNAME}/${PRESEL}/$VARNAME --correlateProcessCR 'W,W,SR,rfac_W_full,templates/${PRESEL}/rfactors_${VARNAME}_WSR_Over_WECR.root' --correlateProcessCR 'EWKW,EWKW,SR,rfac_EWKW_full,templates/${PRESEL}/rfactors_${VARNAME}_EWKWSR_Over_WECR.root' --region WE --unbinned --xp W,EWKW --appendWorkspace vbfdm.input.root"
     echo "===> EXECUTING " $command
     eval $command
     echo "Done at $(date)"

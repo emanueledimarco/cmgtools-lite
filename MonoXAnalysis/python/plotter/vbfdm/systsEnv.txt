@@ -46,7 +46,7 @@ pdf_gg_accept           : ggH.* : .* : 1.010
 QCDscale_ggH2in         : ggH.* : .* : 1.300
 
 # control regions uncertainty
-ZNuNu_norm_ctrl         : .*ZNuNu : vbfdm : 1.500 : lnU
-ZNuNu_norm_ctrl         : .*ZLL : z.* : 1.500 : lnU
-WJets_norm_ctrl         : W|EWKW : vbfdm : 1.500 : lnU
-WJets_norm_ctrl         : W|EWKW : w.* : 1.500 : lnU
+# ZNuNu_norm_ctrl         : .*ZNuNu : vbfdm : 1.500 : lnU
+# ZNuNu_norm_ctrl         : .*ZLL : z.* : 1.500 : lnU
+# WJets_norm_ctrl         : W|EWKW : vbfdm : 1.500 : lnU
+# WJets_norm_ctrl         : W|EWKW : w.* : 1.500 : lnU

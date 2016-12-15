@@ -77,7 +77,7 @@ class RFactorMaker:
         num = hists[(self.numproc,'SR')]
         denom = hists[(self.denproc,'CR')]
         for b in range(1,rfac.GetNbinsX()+1): 
-            if denom.GetBinContent(b) > 0:
+            if denom.GetBinContent(b) > 0 and num.GetBinContent(b) > 0:
                 r = num.GetBinContent(b)/denom.GetBinContent(b)
                 sigmar = r * math.sqrt(math.pow(num.GetBinError(b)/num.GetBinContent(b),2) + math.pow(denom.GetBinError(b)/denom.GetBinContent(b),2))
             else: (r,sigmar) = (0,0)

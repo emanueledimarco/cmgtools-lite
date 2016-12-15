@@ -132,7 +132,7 @@ int monojetIDcentralJet(float jetClean_leadClean, float jetClean_eta)
   // WARNING: jetClean_leadClean is a float, but it should be a flag, so better to cast it to int after summing 0.5
   // e.g. if 1 in float is read as 0.9999999...., then when casting the flag could be converted to 0, so add 0.5 and (int) 1.4999999 will be 1
 
-  if (abs(jetClean_eta) < 2.5) return ((int) jetClean_leadClean + 0.5);
+  if (abs(jetClean_eta) < 2.5) return ((int) (jetClean_leadClean + 0.5));
   else return 1;
 
 }
@@ -144,6 +144,8 @@ int lepTightIdAndPt(float nLepT, float lep1_pt, int lep1_tightID, float lep2_pt,
   // this function manage the possible cases, so it basically returns -->  (lep1_isTight and pT1> XXX) || lep2_isTight and pT2 > XXX)
   // usually the requirement on the number of tight leptons from the Z is used together with nMu10V or nEle10V = 2.
   //Therefore,  only the case nTightLeptons = 1 or 2 are considered
+
+  // this function as it is can be useful only when you have to require, e.g., nEle40T > X and pT(lead e) > Y, con y != 40
 
   int NlepT = (int) (nLepT + 0.5); 
 
@@ -158,6 +160,58 @@ int lepTightIdAndPt(float nLepT, float lep1_pt, int lep1_tightID, float lep2_pt,
     return (lep1_pt > pT_threshold || lep2_pt > pT_threshold);
 
   } else return 0;
+
+}
+
+float minDphi_jetsMet_withNjets(int nJet, int nJetToUse, float &jetPhiArrayFirstElement, float metPhi)
+{
+  //================================
+  // WARNING
+  //
+  // at the moment the function doesn't work inside a txt cut file, it looks like I cannot pass the pointer to the collection
+  // also passing the first element as a reference and getting the address of location doesn't work
+  // following issue is raised
+  // Error in <TTreeFormula::Compile>:  Bad numerical expression : "minDphi_jetsMet_withNjets(nJetClean,50,JetClean_phi[0],metNoMu_phi)"
+  //================================
+
+
+  // this function computes and returns the minimum deltaPhi between met and the first jets
+  // nJet is the dimension of the collection of jets to use for computation
+  // nJetToUse sets how many jets to use (no more than nJet)
+  // jetPhiArray is the list of phi for the jets collection, taken from the pointer to first element location
+  // metPhi is the phi for met (can use any met)
+
+  float minDphi = 999;
+  float* jetPhiArray = &jetPhiArrayFirstElement;
+
+  if (nJet <= nJetToUse) nJetToUse = nJet;
+  
+  for (int i = 0; i < nJetToUse; i++) {
+    float tmp_dphi = fabs(deltaPhi(jetPhiArray[i],metPhi));
+    minDphi = (minDphi <= tmp_dphi) ? minDphi : tmp_dphi;
+  }
+  
+  return fabs(minDphi);  // this value is already in [0, Pi] by definition, but in this way it is clearer
+
+}
+
+int goodJetCleanNHF_eta3to3p2(float jetclean1_eta, float jetclean1_phi, float jetFwd1_nhef, float jetFwd1_eta, float jetFwd1_phi, float jetFwd2_nhef, float jetFwd2_eta, float jetFwd2_phi)
+{
+
+  // to be fixed
+
+  // check if jet is forward (eta > 2.5, we need 3.0 < eta < 3.2)
+  // if yes, then JetClean belongs to JetFwd collection and JetFwd1 should coincides with JetClean1
+  // actually JetFwd1 might not be a clean jet. We pass the leading 2 forward jet and make a match using DeltaR
+  // if neither JetFwd are matched, return 1 (function returns a flag used to apply a cut, so 1 means that cut is irrelevant)
+
+  if (std::abs(jetclean1_eta) > 3.0 && std::abs(jetclean1_eta) < 3.2) {
+    if (deltaR(jetclean1_eta, jetclean1_phi, jetFwd1_eta, jetFwd1_phi) < 0.1 ) return (jetFwd1_nhef < 0.96);
+    else if (deltaR(jetclean1_eta, jetclean1_phi, jetFwd2_eta, jetFwd2_phi) < 0.1 ) return (jetFwd2_nhef < 0.96);
+    else return 1;
+  } else {
+    return 1;
+  }
 
 }
 

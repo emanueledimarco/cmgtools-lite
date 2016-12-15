@@ -7,6 +7,10 @@ import ROOT as rt
 from optparse import OptionParser
 from CMGTools.MonoXAnalysis.plotter.monojet.prepareRFactors import RFactorMaker
 
+#lumiToUse = 12.9  # temporary solution, it would be better to pass it as an option
+read_u2_mciprian = False
+use_TREES_MET_for_electrons = False
+
 class Analysis:
     def __init__(self,options,mcPlotsOptions=None):
     
@@ -16,6 +20,8 @@ class Analysis:
         if "HOSTNAME" in os.environ:  
             if os.environ["HOSTNAME"] == "pccmsrm29.cern.ch":
                 TREEDIR='/u2/emanuele/'
+                if read_u2_mciprian:
+                    TREEDIR='/u2/mciprian/'
 
         anaOpts = []
         
@@ -29,19 +35,51 @@ class Analysis:
             self.MCA='vbfdm/mca-80X-muonCR.txt'
         elif region in ['ZE','WE']: 
             T=TREEDIR+'TREES_1LEP_80X_V4'
+            if use_TREES_MET_for_electrons:
+                T=TREEDIR+'TREES_MET_80X_V4'
             self.MCA='vbfdm/mca-80X-electronCR.txt'
         elif region in ['gjets']: 
             T=TREEDIR+'TREES_1G_80X_V4'
             self.MCA='monojet/mca-80X-Gj.txt'        
      
         corey = 'mcAnalysis.py ' if len(options.pdir)==0 else 'mcPlots.py '
-        coreopt = ' -P '+T+' --s2v -j 6 -l 24.47 -G'
+        coreopt = ' -P '+T+' --s2v -j 6 -l ' + str(options.lumi) + ' -G'
         plotopt = ' -f --poisson --pdir ' + options.pdir
         if region != 'SR': plotopt += ' --showRatio --maxRatioRange 0.5 1.5 --fixRatioRange '
         anaOpts += [coreopt]
      
         if options.upToCut: anaOpts.append('-U '+options.upToCut)
-     
+        # careful below: these options are lists, not string, need to cast
+        # also, -X takes 1 argument, so we will have -X cut1 -X cut2 ...
+        # -R takes 3 argument, so str(x) would be an ntuple with 3 members: need to make a string with 3 words separated by space 
+        if options.cutsToExclude: anaOpts.append(' -X '+ str(" -X ".join(str(x) for x in options.cutsToExclude)))
+        if options.cutsToAdd: 
+            for ntpl in options.cutsToAdd:                
+                #print str(ntpl)
+                string_option = str(ntpl[0]) + " " + str(ntpl[1]) + " '" + str(ntpl[2]) + "' "
+                #print string_option
+                anaOpts.append(' -A ' + string_option)
+        if options.cutsToReplace: 
+            for ntpl in options.cutsToReplace:
+                #print str(ntpl)
+                string_option = str(ntpl[0]) + " " + str(ntpl[1]) + " '" + str(ntpl[2]) + "' "
+                #print string_option
+                anaOpts.append(' -R ' + string_option)
+
+
+        # if region in ['SR']:
+        #     fev = ' -F mjvars/t \"'+T+'/friends_SR/evVarFriend_{cname}.root\" '
+        # elif region in ['ZM','WM']:
+        #     fev = ' -F mjvars/t \"'+T+'/friends_VM/evVarFriend_{cname}.root\" '
+        # elif region in ['ZE','WE']:
+        #     fev = ' -F mjvars/t \"'+T+'/friends_VE/evVarFriend_{cname}.root\" '
+        #     # if using TREES_MET_80X_V4 also for electron regions, use friends_VM
+        #     if use_TREES_MET_for_electrons:
+        #         fev = ' -F mjvars/t \"'+T+'/friends_VM/evVarFriend_{cname}.root\" '
+        # else:
+        #     print "WARNNG: no region among SR,ZM,ZE,WM,WE specified. Putting friends in ",T,"/friends/"
+        #     fev = ' -F mjvars/t \"'+T+'/friends/evVarFriend_{cname}.root\" '
+
         fdir = {
             'SR': 'friends_SR',
             'ZM': 'friends_VM',
@@ -49,7 +87,17 @@ class Analysis:
             'ZE': 'friends_VE',
             'WE': 'friends_VE',
             }
+        if use_TREES_MET_for_electrons:
+            fdir = {
+                'SR': 'friends_SR',
+                'ZM': 'friends_VM',
+                'WM': 'friends_VM',
+                'ZE': 'friends_VM',
+                'WE': 'friends_VM',
+                }
+      
         fev = ' -F mjvars/t \"'+T+'/'+fdir[region]+'/evVarFriend_{cname}.root\" '
+
         fsf = ' --FMC sf/t \"'+T+'/friends/sfFriend_{cname}.root\" '
         anaOpts += [fev, fsf]
         if options.synch == True: anaOpts += ['-u']
@@ -82,6 +130,7 @@ class Analysis:
      
         if region not in cuts: raise RuntimeError, "Region "+region+" not in the foreseen ones: "+cuts
         weights = {
+            #electron regions with trigmetnomu are a temporary solution for comparison with VBF H analysis, that use metnoMu also in W(ev)
             'SR': ['puw','SF_trigmetnomu','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
             'ZM' : ['puw','SF_trigmetnomu','SF_LepTightLoose','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
             'ZE'   : ['puw','SF_LepTightLoose','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
@@ -89,7 +138,17 @@ class Analysis:
             'WE'  : ['puw','SF_LepTight','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
             'gjets' : ['puw','SF_BTag','SF_NLO_QCD','SF_NLO_EWK']
             }
-
+        if use_TREES_MET_for_electrons:
+            weights = {
+                #electron regions with trigmetnomu are a temporary solution for comparison with VBF H analysis, that use metnoMu also in W(ev)
+                'SR': ['puw','SF_trigmetnomu','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
+                'ZM' : ['puw','SF_trigmetnomu','SF_LepTightLoose','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
+                'ZE'   : ['puw','SF_trigmetnomu','SF_LepTightLoose','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
+                'WM' : ['puw','SF_trigmetnomu','SF_LepTight','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
+                'WE'  : ['puw','SF_trigmetnomu','SF_LepTight','SF_BTag','SF_NLO_QCD','SF_NLO_EWK'],
+                'gjets' : ['puw','SF_BTag','SF_NLO_QCD','SF_NLO_EWK']
+                }
+        
         weightsString = " -W '" + "*".join(weights[region]) + "'"
 
         self.cuts = cuts[region] 
@@ -129,26 +188,38 @@ if __name__ == "__main__":
 
     parser = OptionParser(usage=usage)
     parser.add_option("-r", "--region", dest="region", default='SR', help='Find the yields for this phase space')
+    parser.add_option("-l", "--lumi",   dest="lumi",   type="float", default="12.9", help="Luminosity (in 1/fb)");
     parser.add_option("-d", "--dry-run", dest="dryrun", action="store_true", default=False, help='Do not run the commands, just print them')
     parser.add_option("-s", "--synch", dest="synch", action="store_true", default=False, help='Do not apply any scale factor, bare yields')
     parser.add_option("-p", "--pdir", dest="pdir", type="string", default="", help='If given, make the plots and put them in the specified directory')
     parser.add_option("--select-plot", "--sP", dest="plotselect", action="append", default=[], help="Select only these plots out of the full file")
     parser.add_option("-U", "--up-to-cut",      dest="upToCut",   type="string", help="Run selection only up to the cut matched by this regexp, included.")
+    parser.add_option("-X", "--exclude-cut", dest="cutsToExclude", action="append", default=[], help="Cuts to exclude (regexp matching cut name), can specify multiple times.") 
+    parser.add_option("-R", "--replace-cut", dest="cutsToReplace", action="append", default=[], nargs=3, help="Cuts to invert (regexp of old cut name, new name, new cut); can specify multiple times.")
+    parser.add_option("-A", "--add-cut",     dest="cutsToAdd",     action="append", default=[], nargs=3, help="Cuts to insert (regexp of cut name after which this cut should go, new name, new cut); can specify multiple times.")  
     parser.add_option("--twodim", dest="twodim", action="store_true", help="run the two-dimensional analysis")
     parser.add_option("--fullControlRegions", dest="fullControlRegions", action="store_true", default=False, help='Do not run only one mcAnalysis/mCPlots, do all the control regions')
     parser.add_option("--propSystToVar", dest="propSystToVar", type="string", default="", help='Make the templates for a given variable, nominal and systematic alternatives')
     parser.add_option("--tF","--transferFactor", dest="transferFactor",  type="string", default="", help='Make the transfer factors from control regions to signal region. Take the templates for the specified variable.')
     (options, args) = parser.parse_args()
 
+    # if the user has passed the -U option, use that un the following
+    if options.upToCut:
+        #print "CHECK"
+        sel_steps = {'user_sel':options.upToCut}
+        #sel_steps = {options.upToCut:options.upToCut}
+    else:
     #sel_steps = {'v_presel':'btagveto', 'vbfjets':'vbfjets', 'full_sel':'dphihmT'}
     #sel_steps = {'vbfjets':'vbfjets', 'full_sel':'dphihmT'}
-    sel_steps = {'vbfjets':'vbfjets'}
+        sel_steps = {'vbfjets':'vbfjets'}
     exclude_plots = {'v_presel': ['jcentral_eta','jfwd_eta','detajj','detajj_fullsel','mjj','mjj_fullsel'],
                      'vbfjets': ['jcentral_eta','jfwd_eta'],
-                     'full_sel': ['detajj','mjj','nvtx','rho']
+                     'full_sel': ['detajj','mjj','nvtx','rho'],
+                     'user_sel': ['jcentral_eta','jfwd_eta'],
+                     #options.upToCut: ['jcentral_eta','jfwd_eta']
                      }
-    rebinFactor = {'v_presel':1, 'vbfjets':1, 'full_sel':1}
-    ctrl_regions = ['ZM','WM','ZE','WE','SR']
+    rebinFactor = {'v_presel':1, 'vbfjets':1, 'full_sel':1, 'user_sel':1}
+    ctrl_regions = ['ZM','WM','ZE','WE','SR']  # N.B. it has also SR to loop on any region. At first there were only the real CRs
 
     if options.fullControlRegions:
         pdirbase = options.pdir
@@ -156,13 +227,15 @@ if __name__ == "__main__":
             options.region = CR
             options.upToCut = ''
             for s,v in sel_steps.iteritems():
-                print "#===> Making selection / plots for control region ",options.region," at selection step: ",s, "(cut =",v,")"
+                print "#===> Making selection / plots for ",("signal" if CR=='SR' else "control")," region",options.region," at selection step: ",s, "(cut =",v,")"
                 options.upToCut = v
-                options.pdir = pdirbase+"/"+CR+("/" if CR=='SR' else "CR/")+s
+                #options.upToCut = (v if v!='all' else '')
+                options.pdir = pdirbase+"/"+CR+("/" if CR=='SR' else "CR/")+v
                 mcpOpts = ['--xP '+','.join(exclude_plots[s]), '--rebin '+str(rebinFactor[s])]
                 if len(options.plotselect)>0: mcpOpts += ['--sP '+','.join(options.plotselect)]
-                if CR!='WE': mcpOpts += ['--xp QCD'] # too large uncertainty
-                if CR=='SR': mcpOpts += ['--showIndivSigShapes','--xp data,QCD','--rebin 2'] # blind data
+                # if CR!='WE': mcpOpts += ['--xp QCD'] # too large uncertainty
+                # if CR=='SR': mcpOpts += ['--showIndivSigShapes','--xp data,QCD','--rebin 2']
+                if CR=='SR': mcpOpts += ['--showIndivSigShapes','--xp data','--rebin 1']
                 analysis = Analysis(options,mcpOpts)
                 analysis.runOne()        
 
@@ -170,24 +243,24 @@ if __name__ == "__main__":
     elif len(options.propSystToVar)>0:
         pdirbase = options.pdir if options.pdir else "templates"
         processesToProp = {
-            'SR': ['ZNuNu','W'],
+            'SR': ['ZNuNu','W','EWKZNuNu','EWKW'],
             'ZM' : ['ZLL','EWKZLL'],
             'ZE' : ['ZLL','EWKZLL'],
             'WM' : ['W','EWKW'],
             'WE' : ['W','EWKW']
             }
-        all_regions = ['SR'] + ctrl_regions
+        all_regions = ctrl_regions  # ctrl_regions actually contains also SR, but renaming the list makes it easier to remember what it is
         for reg in all_regions:
             options.region = reg
             for s,v in sel_steps.iteritems():
                 print "#===> Propagating systematics for control region ",options.region," at selection step: ",s, "(cut =",v,")"
-                options.upToCut = s
-                options.pdir = pdirbase + "/" + s
+                options.upToCut = v
+                options.pdir = pdirbase + "/" + v
                 mcpOpts = ['--rebin '+str(rebinFactor[s])]
                 procs = ','.join(processesToProp[reg])
                 print "# propagating systematics to processes ",procs, " in the region ",reg
                 analysis = Analysis(options,mcpOpts)
-                myout = pdirbase+"/"+s+"/templates_"+options.propSystToVar+'_'+reg+'.root'
+                myout = pdirbase+"/"+v+"/templates_"+options.propSystToVar+'_'+reg+'.root'
                 analysis.runOneSyst(options.propSystToVar,procs,myout)
 
 
@@ -201,7 +274,12 @@ if __name__ == "__main__":
             'Znunu_from_Zee'   : ['ZNuNu','ZLL','SR','ZE'],
             'W_from_Wmumu' : ['W','W','SR','WM'],
             'W_from_Wenu' : ['W','W','SR','WE'],
-            'Z_from_Wlnu' : ['ZNuNu','W','SR','SR']
+            'Z_from_Wlnu' : ['ZNuNu','W','SR','SR'],
+            'EWK_Znunu_from_Zmumu' : ['EWKZNuNu','EWKZLL','SR','ZM'],
+            'EWK_Znunu_from_Zee'   : ['EWKZNuNu','EWKZLL','SR','ZE'],
+            'EWK_W_from_Wmumu' : ['EWKW','EWKW','SR','WM'],
+            'EWK_W_from_Wenu' : ['EWKW','EWKW','SR','WE'],
+            'EWK_Z_from_Wlnu' : ['EWKZNuNu','EWKW','SR','SR']
             }
         
         for s,v in sel_steps.iteritems():
@@ -209,9 +287,9 @@ if __name__ == "__main__":
             for k,tf in TFs.iteritems():
                 num_proc=tf[0]; den_proc=tf[1]
                 outdir = options.pdir if options.pdir else 'templates'
-                file_prefix = outdir+('/'+s+'/templates_'+options.transferFactor+'_')
+                file_prefix = outdir+('/'+v+'/templates_'+options.transferFactor+'_')
                 num_file=file_prefix+tf[2]+'.root'; den_file=file_prefix+tf[3]+'.root'
-                num_sel='SR'; den_sel='CR' if k!='Z_from_Wlnu' else 'SR'
+                num_sel='SR'; den_sel='CR' if (k!='Z_from_Wlnu' and k!='EWK_Z_from_Wlnu') else 'SR'
      
                 print "# computing transfer factor: ",k, " reading ", num_sel, " histos from ",num_file," and ",den_sel, " histos from ",den_file
         
@@ -226,18 +304,14 @@ if __name__ == "__main__":
              
                 systs={}
              
-                if num_proc=='ZNuNu' and den_proc=='W': # in this case it is Z/W (SR), so only theo systematics play role
-                    # for the time being, do not have theo systs on other than recoil
-                    systs[(den_proc,'CR','up')]=[] #systsUpTheo
-                    systs[(den_proc,'CR','down')]=[] #systsDownTheo
-                elif den_proc=='ZLL' or den_proc=='W':
+                if den_proc=='ZLL' or den_proc=='W' or den_proc=='EWKZLL' or den_proc=='EWKW':
                     systs[(den_proc,'CR','up')]=systsUpL
                     systs[(den_proc,'CR','down')]=systsDownL
                 elif den_proc=='GJetsHT':
                     systs[(den_proc,'CR','up')]=systsUpTheo
                     systs[(den_proc,'CR','down')]=systsDownTheo
                 else:
-                    print "ERROR! Numerator processes can be only ZLL or W or GJetsHT"
+                    print "ERROR! Denominator processes can be only ZLL or W or EWKZLL or EWKW or GJetsHT"
                     exit()
              
                 if num_proc=='ZNuNu':
@@ -254,12 +328,26 @@ if __name__ == "__main__":
                     else:
                         print "Num is ",num_proc," so only W is allowed as denominator"
                         exit()
+                elif num_proc=='EWKZNuNu':
+                    systs[(num_proc,'SR','up')]=[]
+                    systs[(num_proc,'SR','down')]=[]
+                    if den_proc=='EWKZLL': title = 'R^{EWK}_{Z}'
+                    elif den_proc=='EWKW': title = 'R^{EWK}_{Z/W}'
+                    elif den_proc=='GJetsHT': title = 'R_{#gamma}'
+                    else: exit()
+                elif num_proc=='EWKW':
+                    systs[(num_proc,'SR','up')]=[]
+                    systs[(num_proc,'SR','down')]=[]
+                    if den_proc=='EWKW': title = 'R^{EWK}_{W}'
+                    else:
+                        print "Num is ",num_proc," so only W is allowed as denominator"
+                        exit()
                 else:
-                    print "ERROR! Numerator processes can be only ZNuNu or W"
+                    print "ERROR! Numerator processes can be only ZNuNu or W or EWKZNuNu or EWKW"
                     exit()
              
              
-                outname = outdir+"/"+s+"/rfactors_"+options.transferFactor+"_"+num_proc+num_sel+"_Over_"+tf[3]+den_sel+".root"
+                outname = outdir+"/"+v+"/rfactors_"+options.transferFactor+"_"+num_proc+num_sel+"_Over_"+tf[3]+den_sel+".root"
                 outfile = rt.TFile(outname,"RECREATE")
              
                 print systs
@@ -271,7 +359,7 @@ if __name__ == "__main__":
                 hists_statonly[(den_proc,'CR')] = rfm.hists_nominal[(den_proc,'CR','nominal')]
                 rfac_statonly = rfm.computeRFactors(hists_statonly,outfile,"stat")
                 name = outname.replace(".root","")
-                lumi = 24.47
+                lumi = options.lumi
                 rfm.makePlot(rfac_statonly,rfac_full,name,lumi,title,[])
              
                 outfile.Close()
