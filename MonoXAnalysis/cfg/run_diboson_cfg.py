@@ -24,7 +24,7 @@ doT1METCorr = getHeppyOption("doT1METCorr",True)
 forcedSplitFactor = getHeppyOption("splitFactor",-1)
 forcedFineSplitFactor = getHeppyOption("fineSplitFactor",-1)
 isTest = getHeppyOption("isTest",False)#True)
-doLepCorr = getHeppyOption("doLepCorr",True)#False)
+doLepCorr = getHeppyOption("doLepCorr",False)
 doPhotonCorr = getHeppyOption("doPhotonCorr",True)#False)
 
 # Define skims
@@ -391,7 +391,7 @@ if scaleProdToLumi>0: # select only a subset of a sample, corresponding to a giv
         c.fineSplitFactor = 1
 
 #json = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON.txt"
-json = "/cmshome/gellisim/json14Nov2016.txt"#"/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt"#"/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Cert_271036-278290_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt"
+json = "/cmshome/gellisim/CMSSW_8_0_20/src/CMGTools/MonoXAnalysis/cfg/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON.txt"
 if False:
     is50ns = False
     selectedComponents = PrivateSamplesData
@@ -413,24 +413,23 @@ if runData and not isTest: # For running on data
 
     
 
-#    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v1", [272021,272759] ) ); Shorts.append("PromptReco_v1")
-#    ProcessingsAndRunRanges.append( ("Run2016B-01Jul2016-v2",  [272760,273017] ) ); Shorts.append("01Jul2016-v2")
-#    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273150,275376] ) ); Shorts.append("PromptReco_v2")
-#    ProcessingsAndRunRanges.append( ("Run2016C-PromptReco-v2", [275420,276283] ) ); Shorts.append("PromptReco_v2")
-#    ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("PromptReco_v2")
+#    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v1", [272021,272818] ) ); Shorts.append("PromptReco_v1")
+    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273017,275376] ) ); Shorts.append("PromptReco_v2")
+    ProcessingsAndRunRanges.append( ("Run2016C-PromptReco-v2", [275420,276283] ) ); Shorts.append("PromptReco_v2")
+    ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("PromptReco_v2")
 #    ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276827,277420] ) ); Shorts.append("PromptReco_v2")
 #    ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277776,278808] ) ); Shorts.append("PromptReco_v1")
 
-    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v1", [272760,272818] ) ); Shorts.append("23Sep2016_v1")
-    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v3", [273017,275376] ) ); Shorts.append("23Sep2016-v3")
-    ProcessingsAndRunRanges.append( ("Run2016C-23Sep2016-v1", [275656,276283] ) ); Shorts.append("23Sep2016_v1")
-    ####ProcessingsAndRunRanges.append( ("Run2016D-23Sep2016-v1", [276315,276811] ) ); Shorts.append("23Sep2016_v1")
-    ####ProcessingsAndRunRanges.append( ("Run2016E-23Sep2016-v1", [276831,277420] ) ); Shorts.append("23Sep2016_v1")
-    ####ProcessingsAndRunRanges.append( ("Run2016F-23Sep2016-v1", [277932,278808] ) ); Shorts.append("23Sep2016_v1")
-    ####ProcessingsAndRunRanges.append( ("Run2016G-23Sep2016-v1", [278820,280385] ) ); Shorts.append("23Sep2016_v1")
-    ####ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v1", [281085,281201] ) ); Shorts.append("PromptReco_v1")
-    ####ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v2", [281207,284035] ) ); Shorts.append("PromptReco_v2")
-    ####ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v3", [284036,284068] ) ); Shorts.append("PromptReco_v3")
+#    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v1", [272760,272818] ) ); Shorts.append("23Sep2016_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v3", [273017,275376] ) ); Shorts.append("23Sep2016-v3")
+#    ProcessingsAndRunRanges.append( ("Run2016C-23Sep2016-v1", [275656,276283] ) ); Shorts.append("23Sep2016_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016D-23Sep2016-v1", [276315,276811] ) ); Shorts.append("23Sep2016_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016E-23Sep2016-v1", [276831,277420] ) ); Shorts.append("23Sep2016_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016F-23Sep2016-v1", [277932,278808] ) ); Shorts.append("23Sep2016_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016G-23Sep2016-v1", [278820,280385] ) ); Shorts.append("23Sep2016_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v1", [281085,281201] ) ); Shorts.append("PromptReco_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v2", [281207,284035] ) ); Shorts.append("PromptReco_v2")
+#    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v3", [284036,284068] ) ); Shorts.append("PromptReco_v3")
     ##ProcessingsAndRunRanges.append( ("Run2016G-PromptReco-v1", [278815,278820] ) ); Shorts.append("PromptReco_v1")
 
     if diLepSkim == True:
@@ -441,8 +440,8 @@ if runData and not isTest: # For running on data
         DatasetsAndTriggers.append( ("SingleMuon", triggers_1mu_iso + triggers_mumu_iso + triggers_mumu_ss + triggers_mumu_ht + triggers_3mu + triggers_3mu_alt) )
         #DatasetsAndTriggers.append( ("SinglePhoton",   triggers_SinglePhoton) )
     if vGammaSkim == True:
-        #DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
-        DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
+        DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
+        #DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
     if singlePhotonSkim == True:
         DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
     if signalSkim == True:
@@ -474,7 +473,7 @@ if runData and not isTest: # For running on data
                                                  useAAA=useAAA)
                 print "Will process %s (%d files)" % (comp.name, len(comp.files))
                 print "\ttrigger sel %s, veto %s" % (triggers, vetos)
-                comp.splitFactor = len(comp.files)/10#4
+                comp.splitFactor = len(comp.files)#/10#4 changed for data. Some file make crash the entire jobs. As I'm working in the Rome batch, is better to have many jobs than less but corrupted
                 comp.fineSplitFactor = 1
                 selectedComponents.append( comp )
             iproc += 1
@@ -635,117 +634,8 @@ elif test == 'simone':
     from PhysicsTools.Heppy.utils.miniAodFiles import miniAodFiles
     sample = cfg.MCComponent(
            files = [
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0001/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0004/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0000/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0068/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0079/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0160/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0154/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0005/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0040/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0191/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0065/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0120/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0041/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0087/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0006/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0076/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0044/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0014/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0081/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0146/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0057/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0008/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0155/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0071/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0129/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0108/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0077/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0043/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0183/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0122/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0182/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0116/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0024/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0028/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0162/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0188/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0106/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0097/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0126/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0051/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0112/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0036/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0176/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0145/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0025/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0172/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0193/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0026/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0167/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0083/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0196/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0136/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0195/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0111/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0161/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0013/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0042/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0173/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0148/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0198/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0037/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0150/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0180/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0124/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0089/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0017/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0181/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0016/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0058/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0092/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0030/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0059/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0061/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0147/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0131/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0141/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0197/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0109/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0064/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0164/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0114/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0189/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0045/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0018/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0085/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0098/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0093/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0105/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0054/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0133/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0067/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0052/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0110/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0072/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0073/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0056/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0132/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0021/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0107/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0157/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0070/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0153/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0169/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0135/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0115/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0184/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0035/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0031/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0039/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           "/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ1000_Width01/Job_0199/MakeMINIAOD/WGammaToJJ1000_Width01_MINIAOD.root",
-           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext3-v1/00000/00A10CC4-4227-E611-BBF1-C4346BBCD528.root"
+           #"file:ttbar.root",#"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext3-v1/00000/00A10CC4-4227-E611-BBF1-C4346BBCD528.root"
+           "file:muonRunH.root",#"root://cms-xrd-global.cern.ch//store/data/Run2016H/SingleMuon/MINIAOD/PromptReco-v3/000/284/037/00000/48C533D1-F69F-E611-B8C9-02163E013827.root",
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv1/TT_TuneCUETP8M1_13TeV-powheg-pythia8-evtgen/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/4603CC0B-D012-E611-972B-90B11C06E1A0.root"
            #"file:/afs/cern.ch/work/s/sgelli/private/CMSSW_8_0_11/src/CMGTools/MonoXAnalysis/cfg/10C18407-BB2C-E611-9885-0025905BA734.root",
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1600_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/70000/10C18407-BB2C-E611-9885-0025905BA734.root",
@@ -764,7 +654,7 @@ elif test == 'simone':
            splitFactor = 5
     )
     
-    sample.isMC=True
+    sample.isMC=False#True
     selectedComponents = [sample]
 elif test== 'simoneComponent':
     comp = kreator.makeMCComponent("ZGamma_Signal_2050TeV","/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_2050_TuneCUEP8M1_13TeV_pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM", "CMS",".*root",1.)
