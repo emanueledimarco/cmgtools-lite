@@ -14,7 +14,7 @@ from CMGTools.RootTools.samples.autoAAAconfig import *
 #-------- SET OPTIONS AND REDEFINE CONFIGURATIONS -----------
 
 is50ns = getHeppyOption("is50ns",False)
-runData = getHeppyOption("runData",False)#True)
+runData = getHeppyOption("runData",True)
 scaleProdToLumi = float(getHeppyOption("scaleProdToLumi",-1)) # produce rough equivalent of X /pb for MC datasets
 saveSuperClusterVariables = getHeppyOption("saveSuperClusterVariables",True)
 saveFatJetIDVariables = getHeppyOption("saveFatJetIDVariables",True)
@@ -23,9 +23,9 @@ removeJetReCalibration = getHeppyOption("removeJetReCalibration",False)
 doT1METCorr = getHeppyOption("doT1METCorr",True)
 forcedSplitFactor = getHeppyOption("splitFactor",-1)
 forcedFineSplitFactor = getHeppyOption("fineSplitFactor",-1)
-isTest = getHeppyOption("isTest",True)#False)
-doLepCorr = getHeppyOption("doLepCorr",False)
-doPhotonCorr = getHeppyOption("doPhotonCorr",False)
+isTest = getHeppyOption("isTest",False)
+doLepCorr = getHeppyOption("doLepCorr",False)#True)#False)
+doPhotonCorr = getHeppyOption("doPhotonCorr",False)#True)#False)
 
 # Define skims
 signalSkim = False
@@ -64,7 +64,7 @@ if singleFatJetSkim == True:
 if dibosonSkim == True:
     monoJetCtrlFatJetSkim.minFatJets = 1
     monoJetCtrlLepSkim.minLeptons = 1
-    monoJetCtrlLepSkim.idCut = '(lepton.muonID("POG_ID_Loose")) if abs(lepton.pdgId())==13 else (lepton.electronID("POG_Cuts_ID_SPRING15_25ns_v1_ConvVetoDxyDz_Veto_full5x5"))'
+    monoJetCtrlLepSkim.idCut = '(lepton.muonID("POG_ID_Loose")) if abs(lepton.pdgId())==13 else (lepton.electronID("POG_Cuts_ID_SPRING16_25ns_v1_ConvVetoDxyDz_Veto"))'
     monoJetCtrlLepSkim.ptCuts = [40]
     monoXFatJetAna.jetPt = 120
     lepAna.inclusive_muon_pt = 30
@@ -211,7 +211,7 @@ monoXPuppiJetAna = cfg.Analyzer(
     applyL2L3Residual = True, # Switch to 'Data' when they will become available for Data
     recalibrationType = "AK4PFPuppi",
     mcGT     = "Spring16_25nsV3_MC",
-    dataGT   = "Spring16_25nsV3_DATA", # update with the new one when available in 8.0.X
+    dataGT   = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")],#"Spring16_25nsV3_DATA", # update with the new one when available in 8.0.X
     jecPath = "%s/src/CMGTools/RootTools/data/jec/" % os.environ['CMSSW_BASE'],
     shiftJEC = 0, # set to +1 or -1 to get +/-1 sigma shifts
     addJECShifts = False, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
@@ -236,7 +236,7 @@ monoXSubJetPuppiAna = cfg.Analyzer(
         applyL2L3Residual = True, # Switch to 'Data' when they will become available for Data
         recalibrationType = "AK8PFchs", #unused->no recalibration extracted YET!
         mcGT     = "Spring16_25nsV3_MC",
-        dataGT   = "Spring16_25nsV3_DATA", # update with the new one when available in 8.0.X
+        dataGT   = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")],#"Spring16_25nsV3_DATA", # update with the new one when available in 8.0.X
         jecPath = "%s/src/CMGTools/RootTools/data/jec/" % os.environ['CMSSW_BASE'],
         shiftJEC = 0, # set to +1 or -1 to get +/-1 sigma shifts
         addJECShifts = False, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
@@ -261,7 +261,7 @@ monoXSubJetSoftDropAna = cfg.Analyzer(
         applyL2L3Residual = True, # Switch to 'Data' when they will become available for Data
         recalibrationType = "AK8PFchs", #unused->no recalibration extracted YET!
         mcGT     = "Spring16_25nsV3_MC",
-        dataGT   = "Spring16_25nsV3_DATA", # update with the new one when available in 8.0.X
+        dataGT   = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")],#"Spring16_25nsV3_DATA", # update with the new one when available in 8.0.X
         jecPath = "%s/src/CMGTools/RootTools/data/jec/" % os.environ['CMSSW_BASE'],
         shiftJEC = 0, # set to +1 or -1 to get +/-1 sigma shifts
         addJECShifts = False, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
@@ -391,7 +391,7 @@ if scaleProdToLumi>0: # select only a subset of a sample, corresponding to a giv
         c.fineSplitFactor = 1
 
 #json = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON.txt"
-json = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Cert_271036-278290_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt"
+json = "/cmshome/gellisim/CMSSW_8_0_20/src/CMGTools/MonoXAnalysis/cfg/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 if False:
     is50ns = False
     selectedComponents = PrivateSamplesData
@@ -401,7 +401,7 @@ if False:
 
 if runData and not isTest: # For running on data
     ##run_ranges = [ (272021,275125) ]; useAAA=False; is50ns=False
-    run_ranges = [ (272021, 278808) ]; useAAA=False; is50ns=False
+    run_ranges = [ (272021, 284068) ]; useAAA=False; is50ns=False
     #print "Removing the SoftDrop and Puppi subjet collections (not yet in data)"
     #dmCoreSequence.remove(monoXSubJetPuppiAna)
     #dmCoreSequence.remove(monoXSubJetSoftDropAna)
@@ -412,13 +412,24 @@ if runData and not isTest: # For running on data
     ProcessingsAndRunRanges = []; Shorts = []
 
     
-    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v1", [272021,272759] ) ); Shorts.append("PromptReco_v1")
-    ProcessingsAndRunRanges.append( ("Run2016B-01Jul2016-v2",  [272760,273017] ) ); Shorts.append("01Jul2016-v2")
-    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273150,275376] ) ); Shorts.append("PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016C-PromptReco-v2", [275420,276283] ) ); Shorts.append("PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276827,277420] ) ); Shorts.append("PromptReco_v2")
-    ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277776,278808] ) ); Shorts.append("PromptReco_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v1", [272760,272818] ) ); Shorts.append("23Sep2016_v1")
+
+    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v3", [273150,275376] ) ); Shorts.append("Run2016B-23Sep2016-v3") #273017,275376
+    ProcessingsAndRunRanges.append( ("Run2016C-23Sep2016-v1", [275420,276283] ) ); Shorts.append("Run2016C-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016D-23Sep2016-v1", [276315,276811] ) ); Shorts.append("Run2016D-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016E-23Sep2016-v1", [276830,277420] ) ); Shorts.append("Run2016E-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016F-23Sep2016-v1", [277820,278808] ) ); Shorts.append("Run2016F-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016G-23Sep2016-v1", [278816,280385] ) ); Shorts.append("Run2016G-23Sep2016-v1")
+    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v1", [281010,281202] ) ); Shorts.append("Run2016H-PromptReco-v1")
+    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v2", [281207,284035] ) ); Shorts.append("Run2016H-PromptReco-v2")
+    ProcessingsAndRunRanges.append( ("Run2016H-PromptReco-v3", [284036,284068] ) ); Shorts.append("Run2016H-PromptReco-v3")
+#    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v1", [272021,272759] ) ); Shorts.append("PromptReco_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016B-01Jul2016-v2",  [272760,273017] ) ); Shorts.append("01Jul2016-v2")
+#    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273150,275376] ) ); Shorts.append("PromptReco_v2")
+#    ProcessingsAndRunRanges.append( ("Run2016C-PromptReco-v2", [275420,276283] ) ); Shorts.append("PromptReco_v2")
+#    ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("PromptReco_v2")
+#    ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276827,277420] ) ); Shorts.append("PromptReco_v2")
+#    ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277776,278808] ) ); Shorts.append("PromptReco_v1")
     ##ProcessingsAndRunRanges.append( ("Run2016G-PromptReco-v1", [278815,278820] ) ); Shorts.append("PromptReco_v1")
 
     if diLepSkim == True:
@@ -457,7 +468,7 @@ if runData and not isTest: # For running on data
                                                  "/"+pd+"/"+processing+"/MINIAOD", 
                                                  "CMS", ".*root", 
                                                  json=json, 
-                                                 run_range=this_run_range, 
+                                                 ####run_range=this_run_range, 
                                                  #triggers=triggers[:], vetoTriggers = vetos[:],
                                                  useAAA=useAAA)
                 print "Will process %s (%d files)" % (comp.name, len(comp.files))
@@ -477,16 +488,16 @@ if is50ns:
     pfChargedCHSjetAna.mcGT     = "Summer15_50nsV5_MC"
     pfChargedCHSjetAna.dataGT   = "Summer15_50nsV5_DATA"
 else: 
-    jetAna.mcGT   = "Spring16_25nsV6_MC"
-    jetAna.dataGT = "Spring16_25nsV6_DATA"
-    monoXFatJetAna.mcGT = "Spring16_25nsV6_MC"
-    monoXFatJetAna.dataGT = "Spring16_25nsV6_DATA"
-    monoXPuppiJetAna.mcGT = "Spring16_25nsV6_MC"
-    monoXPuppiJetAna.dataGT = "Spring16_25nsV6_DATA"
-    monoXSubJetPuppiAna.mcGT = "Spring16_25nsV6_MC"
-    monoXSubJetPuppiAna.dataGT = "Spring16_25nsV6_DATA"
-    monoXSubJetSoftDropAna.mcGT = "Spring16_25nsV6_MC"
-    monoXSubJetSoftDropAna.dataGT = "Spring16_25nsV6_DATA"
+    jetAna.mcGT   = [(-1,"Spring16_25nsV10_MC")]
+#    jetAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
+    monoXFatJetAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
+#    monoXFatJetAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
+    monoXPuppiJetAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
+#    monoXPuppiJetAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
+    monoXSubJetPuppiAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
+#    monoXSubJetPuppiAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
+    monoXSubJetSoftDropAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
+#    monoXSubJetSoftDropAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
 
 if removeJetReCalibration:
     ## NOTE: jets will still be recalibrated, since calculateSeparateCorrections is True,
@@ -622,8 +633,8 @@ elif test == 'simone':
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/00000/04FB4BAA-3A33-E611-BC64-008CFA197A90.root",
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/00000/9C6425C8-081C-E611-9F71-001E67E71A56.root",
            #"file:A8A803BC-CC17-E611-BA8C-02163E014550.root",
-           "root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1000_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/10000/3E743410-C82B-E611-8948-0025907FD40C.root",
-           #"root://cms-xrd-global.cern.ch//store/data/Run2016B/SinglePhoton/MINIAOD/PromptReco-v2/000/273/158/00000/00DD3222-261A-E611-9FD2-02163E011E34.root",
+           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1000_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/10000/3E743410-C82B-E611-8948-0025907FD40C.root",
+           "root://cms-xrd-global.cern.ch//store/data/Run2016B/SinglePhoton/MINIAOD/PromptReco-v2/000/273/158/00000/00DD3222-261A-E611-9FD2-02163E011E34.root",
                  ],
            name="ZHLL125", isEmbed=False,
            puFileMC="puMC.root",
@@ -631,7 +642,7 @@ elif test == 'simone':
            splitFactor = 5
     )
     
-    sample.isMC=True#False
+    sample.isMC=False#True#False
     selectedComponents = [sample]
 elif test== 'simoneComponent':
     comp = kreator.makeMCComponent("ZGamma_Signal_1000TeV","/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1000_TuneCUEP8M1_13TeV_pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM", "CMS", ".*root", 1.)

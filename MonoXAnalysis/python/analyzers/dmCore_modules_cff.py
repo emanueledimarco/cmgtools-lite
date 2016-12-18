@@ -140,7 +140,7 @@ genHFAna = cfg.Analyzer(
 )
 
 lheWeightAna = cfg.Analyzer(
-    LHEWeightAnalyzer, name="LHEWeightAnalyzer",
+    LHEWeightAnalyzer, name="LHEWeightAnalyzer", useLumiInfo=False,
 )
 
 pdfwAna = cfg.Analyzer(
@@ -197,7 +197,7 @@ lepAna = cfg.Analyzer(
     # electron isolation correction method (can be "rhoArea" or "deltaBeta")
     ele_isoCorr = "rhoArea" ,
     ele_effectiveAreas = "Spring16_25ns_v1" , #(can be 'Data2012' or 'Phys14_25ns_v1' or 'Spring15_25ns_v1' or 'Spring15_50ns_v1')
-    ele_tightId = "Cuts_SPRING16_25ns_v1_ConvVetoDxyDz" ,
+    ele_tightId = "POG_Cuts_ID_SPRING16_25ns_v1_ConvVetoDxyDz_Veto",#"Cuts_SPRING16_25ns_v1_ConvVetoDxyDz_full5x5" ,
     # Mini-isolation, with pT dependent cone: will fill in the miniRelIso, miniRelIsoCharged, miniRelIsoNeutral variables of the leptons (see https://indico.cern.ch/event/368826/ )
     doMiniIsolation = False, # off by default since it requires access to all PFCandidates 
     packedCandidates = 'packedPFCandidates',
@@ -359,7 +359,7 @@ jetAna = cfg.Analyzer(
     applyL2L3Residual = True, # Switch to 'Data' when they will become available for Data
     recalibrationType = "AK4PFchs",
     mcGT     = "Spring16_25nsV6_MC",
-    dataGT   = "Spring16_25nsV6_DATA",
+    dataGT   = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")],#"Spring16_25nsV6_DATA",
     jecPath = "%s/src/CMGTools/RootTools/data/jec/" % os.environ['CMSSW_BASE'],
     shiftJEC = 0, # set to +1 or -1 to get +/-1 sigma shifts
     addJECShifts = False, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
@@ -398,7 +398,7 @@ monoXFatJetAna = cfg.Analyzer(
     applyL2L3Residual = True, # Switch to 'Data' when they will become available for Data
     recalibrationType = "AK8PFchs",
     mcGT     = "Spring16_25nsV6_MC",
-    dataGT   = "Spring16_25nsV6_DATA", # update with the new one when available in 8.0.X
+    dataGT   = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")],#"Spring16_25nsV6_DATA", # update with the new one when available in 8.0.X
     jecPath = "%s/src/CMGTools/RootTools/data/jec/" % os.environ['CMSSW_BASE'],
     shiftJEC = 0, # set to +1 or -1 to get +/-1 sigma shifts
     addJECShifts = False, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)

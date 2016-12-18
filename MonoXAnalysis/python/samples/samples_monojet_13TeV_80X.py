@@ -17,7 +17,8 @@ Top_MJ         = [ TTJets, TToLeptons_sch_amcatnlo, TBar_tWch, T_tWch ]
 DiBosons_MJ    = [ WW, WZ, ZZ ]
 
 #diboson analysis samples
-TTBar          = [ TT_pow_ext3 ]
+TT_pow_Summer2016 = kreator.makeMCComponent("TT_pow_Summer2016", "/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", "CMS", ".*root", 831.76)
+TTBar          = [ TT_pow_Summer2016 ]
 WJetsToLNu_HT     = [ WJetsToLNu_HT100to200, WJetsToLNu_HT200to400, WJetsToLNu_HT400to600, WJetsToLNu_HT600to800, WJetsToLNu_HT800to1200_ext, WJetsToLNu_HT1200to2500, WJetsToLNu_HT2500toInf ]
 SingleTop      = [ TToLeptons_sch_amcatnlo, TBar_tWch, T_tWch ]
 
