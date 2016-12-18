@@ -14,7 +14,7 @@ from CMGTools.RootTools.samples.autoAAAconfig import *
 #-------- SET OPTIONS AND REDEFINE CONFIGURATIONS -----------
 
 is50ns = getHeppyOption("is50ns",False)
-runData = getHeppyOption("runData",True)
+runData = getHeppyOption("runData",True)#False)
 scaleProdToLumi = float(getHeppyOption("scaleProdToLumi",-1)) # produce rough equivalent of X /pb for MC datasets
 saveSuperClusterVariables = getHeppyOption("saveSuperClusterVariables",True)
 saveFatJetIDVariables = getHeppyOption("saveFatJetIDVariables",True)
@@ -33,8 +33,8 @@ diLepSkim = False
 singleLepSkim = False
 singleFatJetSkim = False
 singlePhotonSkim = False
-dibosonSkim = True #False
-vGammaSkim =False# True
+dibosonSkim = False
+vGammaSkim = True
 
 # --- MONOJET SKIMMING ---
 if signalSkim == True:
@@ -72,12 +72,12 @@ if dibosonSkim == True:
     lepAna.inclusive_electron_pt = 30
     lepAna.loose_electron_pt     = 30
 
-#if vGammaSkim == True:
-   ######################## #monoXFatJetAna.jetPt = 120
-   ######################## #monoJetCtrlFatJetSkim.minFatJets = 1
-   ######################## #gammaJetCtrlSkim.minPhotons = 1
-   ######################## #gammaJetCtrlSkim.minJets = 1
-   ######################## #photonAna.ptMin = 50
+if vGammaSkim == True:
+   monoXFatJetAna.jetPt = 120
+   monoJetCtrlFatJetSkim.minFatJets = 1
+   gammaJetCtrlSkim.minPhotons = 1
+   gammaJetCtrlSkim.minJets = 1
+   photonAna.ptMin = 50
     
 # --- Photon OR Electron SKIMMING ---
 #if photonOrEleSkim == True:
@@ -441,7 +441,7 @@ if runData and not isTest: # For running on data
         #DatasetsAndTriggers.append( ("SinglePhoton",   triggers_SinglePhoton) )
     if vGammaSkim == True:
         DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
-        DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
+        #DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
     if singlePhotonSkim == True:
         DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
     if signalSkim == True:
@@ -473,7 +473,7 @@ if runData and not isTest: # For running on data
                                                  useAAA=useAAA)
                 print "Will process %s (%d files)" % (comp.name, len(comp.files))
                 print "\ttrigger sel %s, veto %s" % (triggers, vetos)
-                comp.splitFactor = len(comp.files)/10#4
+                comp.splitFactor = len(comp.files)#/10#4 changed for data. Some file make crash the entire jobs. As I'm working in the Rome batch, is better to have many jobs than less but corrupted
                 comp.fineSplitFactor = 1
                 selectedComponents.append( comp )
             iproc += 1
@@ -513,7 +513,10 @@ if forcedSplitFactor>0 or forcedFineSplitFactor>0:
 if runData==False and not isTest: # MC all
     ### 25 ns 74X MC samples
     is50ns = False
-    mcSamples = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
+    if vGammaSkim==True:
+      mcSamples = mcSamples_zgamma#monojet_Asymptotic25ns
+    else:
+      mcSamples = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
     #if signalSkim:
         # full signal scan (many datasets!)
         # mcSamples += mcSamples_monojet_Asymptotic25ns_signals
@@ -594,10 +597,15 @@ elif test == 'synch-80X': # sync
         comp.files = [ 'root://eoscms//eos/cms/store/mc/RunIISpring16MiniAODv1/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/60000/00DD003D-4201-E611-A6F7-0CC47A745282.root' ]
         selectedComponents = [ comp ]
     else:
-        selectedComponents = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
+        if vGammaSkim==True:
+           selectedComponents = mcSamples_zgamma#monojet_Asymptotic25ns
+        else:
+           selectedComponents = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
+        #selectedComponents = mcSamples_diboson#zgamma#monojet_Asymptotic25ns
     jetAna.smearJets       = False
     for comp in selectedComponents:
         comp.splitFactor = 1
+
         comp.fineSplitFactor = 1 if getHeppyOption("single") else 2
 elif test == '80X-Data':
     what = getHeppyOption("sample")
@@ -624,13 +632,16 @@ elif test == 'simone':
     from PhysicsTools.Heppy.utils.miniAodFiles import miniAodFiles
     sample = cfg.MCComponent(
            files = [
-           #"root://cms-xrd-global.cern.ch//store/data/Run2016B/SingleElectron/RAW/v2/000/273/150/00000/A8A803BC-CC17-E611-BA8C-02163E014550.root",
-          # "root://eoscms//eos/cms/store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/448/00000/7ED72389-581C-E611-BF09-02163E011BF0.root"
-           #"root://cms-xrd-global.cern.ch//store/data/Run2016B/SingleElectron/MINIAOD/PromptReco-v2/000/273/158/00000/06277EC1-181A-E611-870F-02163E0145E5.root"
-           #"root://xrootd.unl.edu//store/mc/RunIISpring16DR80/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext3-v1/60000/08078977-2F1F-E611-AF79-001E675053A5.root"
-           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext3-v1/00000/00A10CC4-4227-E611-BBF1-C4346BBCD528.root"
+           #"file:ttbar.root",#"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext3-v1/00000/00A10CC4-4227-E611-BBF1-C4346BBCD528.root"
+#           "file:muonRunH.root",#"root://cms-xrd-global.cern.ch//store/data/Run2016H/SingleMuon/MINIAOD/PromptReco-v3/000/284/037/00000/48C533D1-F69F-E611-B8C9-02163E013827.root",
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv1/TT_TuneCUETP8M1_13TeV-powheg-pythia8-evtgen/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/4603CC0B-D012-E611-972B-90B11C06E1A0.root"
-           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/00000/04FB4BAA-3A33-E611-BC64-008CFA197A90.root",
+           #"file:/afs/cern.ch/work/s/sgelli/private/CMSSW_8_0_11/src/CMGTools/MonoXAnalysis/cfg/10C18407-BB2C-E611-9885-0025905BA734.root",
+           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1600_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/70000/10C18407-BB2C-E611-9885-0025905BA734.root",
+           #"file:/afs/cern.ch/work/s/sgelli/public/usercode/Production/WGammaToJJ2000_Width5//Job_0026/MakeMINIAOD/WGammaToJJ2000_Width5_MINIAOD.root",
+           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1600_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/70000/10C18407-BB2C-E611-9885-0025905BA734.root",
+           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1600_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/70000/10C18407-BB2C-E611-9885-0025905BA734.root",
+           #"root://cms-xrd-global.cern.ch//eos/cms/store/user/jkunkle/Samples/ChargedResonance/ChargedResonance_WGToJJ_M1600_width5/ChargedResonance_WGToJJ_M1600_width5/Job_0016/ChargedResonance_WGToJJ_M1600_width5_MINIAOD.root",
+           #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1600_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/70000/10C18407-BB2C-E611-9885-0025905BA734.root",
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/00000/9C6425C8-081C-E611-9F71-001E67E71A56.root",
            #"file:A8A803BC-CC17-E611-BA8C-02163E014550.root",
            #"root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1000_TuneCUEP8M1_13TeV_pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/10000/3E743410-C82B-E611-8948-0025907FD40C.root",
@@ -642,10 +653,11 @@ elif test == 'simone':
            splitFactor = 5
     )
     
-    sample.isMC=False#True#False
+    sample.isMC=False#True
     selectedComponents = [sample]
 elif test== 'simoneComponent':
-    comp = kreator.makeMCComponent("ZGamma_Signal_1000TeV","/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1000_TuneCUEP8M1_13TeV_pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM", "CMS", ".*root", 1.)
+    comp = kreator.makeMCComponent("ZGamma_Signal_2050TeV","/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_2050_TuneCUEP8M1_13TeV_pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM", "CMS",".*root",1.)
+    #comp = kreator.makeMCComponent("ZGamma_Signal_1600TeV","/GluGluSpin0ToZGamma_ZToQQ_W_0-p-014_M_1600_TuneCUEP8M1_13TeV_pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM", "CMS", ".*root", 1.)
     selectedComponents = [ comp ]
 
 ## output histogram

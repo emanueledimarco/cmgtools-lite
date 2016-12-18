@@ -37,6 +37,8 @@ class monoXPuppiJetAnalyzer( Analyzer ):
            recoCorr = puppisd_corrRECO_for.Eval( pJet.pt() ) 
       
        totalWeight = genCorr * recoCorr
+       #print "weight ", totalWeight
+       #print "mass ", pJet.mass(), " corr ", totalWeight * pJet.mass()
        pJet_massCorr = totalWeight * pJet.mass()
       
        return pJet_massCorr

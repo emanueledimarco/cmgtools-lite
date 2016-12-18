@@ -8,6 +8,7 @@ from PhysicsTools.Heppy.physicsutils.JetReCalibrator import JetReCalibrator
 
 from PhysicsTools.HeppyCore.utils.deltar import *
 import PhysicsTools.HeppyCore.framework.config as cfg
+from CMGTools.MonoXAnalysis.analyzers.monoXPuppiJetAnalyzer import *# monoXPuppiJetAnalyzer#puppiCorrector
 
 class monoXSubJetsSoftDropAnalyzer( Analyzer ):
     """Taken from RootTools.JetAnalyzer, simplified, modified, added corrections    """
@@ -45,6 +46,7 @@ class monoXSubJetsSoftDropAnalyzer( Analyzer ):
 
         self.jetLepDR = self.cfg_ana.jetLepDR  if hasattr(self.cfg_ana, 'jetLepDR') else 0.5
         self.lepPtMin = self.cfg_ana.minLepPt  if hasattr(self.cfg_ana, 'minLepPt') else -1
+        self.fatJetCone = cfg_ana.DR if hasattr(self.cfg_ana, 'DR') else .8
 
 
     def declareHandles(self):
@@ -93,12 +95,43 @@ class monoXSubJetsSoftDropAnalyzer( Analyzer ):
         ## Apply jet selection
         event.subJetSoftDrop     = []
         event.subJetSoftDropNoID = []
+        event.customPuppiSoftDropAK8 = []
+        jetUsed = []
+        subJet_counter = 0 #counter for the second loop over the subjets
+        createdCustomAk08 = 0 
+        jet_counter = 0. #to create the ak08Puppi...
+        totJetCounter = 0. #to avoid unreferenced variable problems (before the AK08 was outside of thr loop)
         for jet in allJets:
+            totJetCounter += 1
             if self.testJetNoID( jet ): 
                 event.subJetSoftDropNoID.append(jet) 
                 if self.testJetID ( jet ):
-                    #print "++++++++++++++++++++++ ", jet.pt()
-                    event.subJetSoftDrop.append(jet)
+                  event.subJetSoftDrop.append(jet.correctedP4(0))
+                  subJet_counter = 0
+                  for jet1 in allJets:  
+                    if subJet_counter==0 and jet_counter not in jetUsed:
+                      puppiSoftDropAK8= jet.correctedP4(0)
+                      createdCustomAk08 = 1  
+                    dEta = jet1.correctedP4(0).eta()-jet.correctedP4(0).eta()
+                    dPhi = jet1.correctedP4(0).phi()-jet.correctedP4(0).phi()
+                    if dPhi >= math.pi:
+                      dPhi -= 2*math.pi
+                    elif dPhi < -math.pi:
+                      dPhi += 2*math.pi   
+                    drSubJets = math.sqrt(dEta*dEta + dPhi*dPhi)
+                    if drSubJets<self.fatJetCone:
+                      if subJet_counter != jet_counter and subJet_counter not in jetUsed:
+                        puppiSoftDropAK8 += jet1.correctedP4(0) 
+                      jetUsed.append(subJet_counter)
+                    subJet_counter += 1   
+                  if createdCustomAk08==1:
+                    puppiSoftDropAK8.massCorrected = monoXPuppiJetAnalyzer.puppiCorrector(puppiSoftDropAK8)
+                    event.customPuppiSoftDropAK8.append(puppiSoftDropAK8)
+                    createdCustomAk08=0
+                  jet_counter += 1
+            #if jet_counter>0 and totJetCounter==len(allJets):
+            #  puppiSoftDropAK8.massCorrected = monoXPuppiJetAnalyzer.puppiCorrector(puppiSoftDropAK8)
+            #  event.customPuppiSoftDropAK8.append(puppiSoftDropAK8)
 
         ## Associate jets to leptons
         leptons = event.inclusiveLeptons if hasattr(event, 'inclusiveLeptons') else event.selectedLeptons

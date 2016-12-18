@@ -147,6 +147,10 @@ jetTypeSusyExtra.addVariables([
         NTupleVariable("puMva", lambda x: x.puMva(), float, help="Value of the pu MVA discriminator")
 ])
 
+photonTypeSusy.addVariables([
+      NTupleVariable("MVA_ID", lambda x: x.userFloat("PhotonMVAEstimatorRun2Spring15NonTrig25nsV2p1Values")),
+
+])
 
 # no more present in MINIAOD V2 in 8.0.X
 fatJetType.removeVariable("trimmedMass")

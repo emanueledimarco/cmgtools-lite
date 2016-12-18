@@ -3,7 +3,7 @@ import random
 import math
 from PhysicsTools.Heppy.analyzers.core.Analyzer import Analyzer
 from PhysicsTools.Heppy.analyzers.core.AutoHandle import AutoHandle
-from PhysicsTools.Heppy.physicsobjects.PhysicsObjects import Jet
+from PhysicsTools.Heppy.physicsobjects.PhysicsObjects import Jet, GenJet
 from PhysicsTools.Heppy.physicsutils.JetReCalibrator import JetReCalibrator
 
 from PhysicsTools.HeppyCore.utils.deltar import *
@@ -51,6 +51,8 @@ class monoXFatJetAnalyzer( Analyzer ):
         super(monoXFatJetAnalyzer, self).declareHandles()
         self.handles['jets'] = AutoHandle( self.cfg_ana.jetCol, 'std::vector<pat::Jet>' )
         self.handles['rho'] = AutoHandle( self.cfg_ana.rho, 'double' )
+        if self.cfg_comp.isMC:
+          self.handles['genJet'] = AutoHandle(self.cfg_ana.genJetCol, 'std::vector<reco::GenJet>')
 
     def beginLoop(self, setup):
         super(monoXFatJetAnalyzer,self).beginLoop(setup)
@@ -64,6 +66,8 @@ class monoXFatJetAnalyzer( Analyzer ):
 
         ## Read jets, if necessary recalibrate and shift MET
         allJets = map(Jet, self.handles['jets'].product()) 
+        if self.cfg_comp.isMC:
+          allgenFatJets = map(Jet, self.handles['genJet'].product())#[ x for x in self.handles['genJet'].product() ]
 
         self.deltaMetFromJEC = [0.,0.]
         self.type1METCorr    = [0.,0.,0.]
@@ -85,10 +89,18 @@ class monoXFatJetAnalyzer( Analyzer ):
                         elif abs(told[0]-tnew[0])/(told[0]+tnew[0]) > 0.5e-3 or abs(told[3]-tnew[3]) > 0.5e-3:
                             print "ERROR: I had to recompute jet corrections, and one jet pt or corr changed: old = %s, new = %s\n" % (told, tnew)
 
+         
+        event.genFatJet = []
+        if self.cfg_comp.isMC:
+          for jet in allgenFatJets:
+            event.genFatJet.append(jet)
+            #print "++ ", jet.pt()
+
         ## Apply jet selection
         event.fatJets     = []
         event.fatJetsNoID = []
         for jet in allJets:
+            #print "FatJet ",jet.mass(), " ",jet.eta(), " ",jet.pt(), " " ,jet.phi()
             if self.testJetNoID( jet ): 
                 event.fatJetsNoID.append(jet) 
                 if self.testJetID ( jet ):
@@ -106,8 +118,10 @@ class monoXFatJetAnalyzer( Analyzer ):
             if jet is None:
                 lep.fatjet = lep.jet
             else:
-                lep.fatjet = jet   
-                
+                lep.fatjet = jet
+
+      #  if self.cfg_comp.isMC:        
+      #    setattr(event,"genFatJet", self.genJets )
 
     def testJetID(self, jet):
         #jet.puJetIdPassed = jet.puJetId() 

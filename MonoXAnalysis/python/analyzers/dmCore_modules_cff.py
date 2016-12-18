@@ -385,6 +385,7 @@ from CMGTools.MonoXAnalysis.analyzers.monoXFatJetAnalyzer import monoXFatJetAnal
 monoXFatJetAna = cfg.Analyzer(
     monoXFatJetAnalyzer, name = 'monoXFatJetAnalyzer',
     jetCol = 'slimmedJetsAK8',
+    genJetCol = 'slimmedGenJetsAK8',
     jetPt = 100.,
     jetEta = 2.4,
     jetLepDR = 0.4,
