@@ -18,8 +18,7 @@ def setCAFPath():
         sys.path.append(caf)
 setCAFPath()
 try:
-    #import cmsIO
-    import PhysicsTools.HeppyCore.utils.cmsIO as cmsIO #changed
+    import cmsIO
 except ImportError as e:
     import logging
     logger = logging.getLogger(__name__)

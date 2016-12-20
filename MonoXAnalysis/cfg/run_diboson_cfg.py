@@ -33,8 +33,8 @@ diLepSkim = False
 singleLepSkim = False
 singleFatJetSkim = False
 singlePhotonSkim = False
-dibosonSkim = False
-vGammaSkim = True
+dibosonSkim = True#False
+vGammaSkim = False#True
 
 # --- MONOJET SKIMMING ---
 if signalSkim == True:
