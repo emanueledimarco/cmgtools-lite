@@ -362,7 +362,7 @@ jetAna = cfg.Analyzer(
     dataGT   = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")],#"Spring16_25nsV6_DATA",
     jecPath = "%s/src/CMGTools/RootTools/data/jec/" % os.environ['CMSSW_BASE'],
     shiftJEC = 0, # set to +1 or -1 to get +/-1 sigma shifts
-    addJECShifts = False, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
+    addJECShifts = True, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
     smearJets = False,
     shiftJER = 0, # set to +1 or -1 to get +/-1 sigma shifts  
     alwaysCleanPhotons = False,
@@ -402,7 +402,7 @@ monoXFatJetAna = cfg.Analyzer(
     dataGT   = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")],#"Spring16_25nsV6_DATA", # update with the new one when available in 8.0.X
     jecPath = "%s/src/CMGTools/RootTools/data/jec/" % os.environ['CMSSW_BASE'],
     shiftJEC = 0, # set to +1 or -1 to get +/-1 sigma shifts
-    addJECShifts = False, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
+    addJECShifts = True, # if true, add  "corr", "corrJECUp", and "corrJECDown" for each jet (requires uncertainties to be available!)
     rho = ('fixedGridRhoFastjetAll','',''),
     )
 

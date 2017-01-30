@@ -14,7 +14,7 @@ from CMGTools.RootTools.samples.autoAAAconfig import *
 #-------- SET OPTIONS AND REDEFINE CONFIGURATIONS -----------
 
 is50ns = getHeppyOption("is50ns",False)
-runData = getHeppyOption("runData",True)#False)
+runData = getHeppyOption("runData",True)
 scaleProdToLumi = float(getHeppyOption("scaleProdToLumi",-1)) # produce rough equivalent of X /pb for MC datasets
 saveSuperClusterVariables = getHeppyOption("saveSuperClusterVariables",True)
 saveFatJetIDVariables = getHeppyOption("saveFatJetIDVariables",True)
@@ -25,7 +25,7 @@ forcedSplitFactor = getHeppyOption("splitFactor",-1)
 forcedFineSplitFactor = getHeppyOption("fineSplitFactor",-1)
 isTest = getHeppyOption("isTest",False)
 doLepCorr = getHeppyOption("doLepCorr",False)#True)#False)
-doPhotonCorr = getHeppyOption("doPhotonCorr",False)#True)#False)
+doPhotonCorr = getHeppyOption("doPhotonCorr", True)#False)
 
 # Define skims
 signalSkim = False
@@ -34,7 +34,7 @@ singleLepSkim = False
 singleFatJetSkim = False
 singlePhotonSkim = False
 dibosonSkim = True#False
-vGammaSkim = False#True
+vGammaSkim = False
 
 # --- MONOJET SKIMMING ---
 if signalSkim == True:
@@ -48,7 +48,7 @@ if singleLepSkim == True:
     monoJetCtrlLepSkim.minLeptons = 1
     # this skim is only used for the SingleElectron CR, so Tight cuts on PT and ID
     monoJetCtrlLepSkim.idCut = '(lepton.muonID("POG_ID_Tight") and lepton.relIso04 < 0.15) if abs(lepton.pdgId())==13 else \
-(lepton.electronID("POG_Cuts_ID_SPRING15_25ns_v1_ConvVetoDxyDz_Tight_full5x5") and (lepton.relIso03<0.0354 if abs(lepton.superCluster().eta())<1.479 else lepton.relIso03<0.0646))'
+(lepton.electronID("POG_Cuts_ID_SPRING16_25ns_v1_ConvVetoDxyDz_Tight_full5x5") and (lepton.relIso03<0.0354 if abs(lepton.superCluster().eta())<1.479 else lepton.relIso03<0.0646))'
     #monoJetCtrlLepSkim.idCut = '(lepton.muonID("POG_ID_Loose")) if abs(lepton.pdgId())==13 else (lepton.electronID("POG_Cuts_ID_SPRING15_25ns_v1_ConvVetoDxyDz_Veto_full5x5"))'
     #monoJetCtrlLepSkim.idCut='(lepton.muonID("POG_SPRING15_25ns_v1_Veto")) if abs(lepton.pdgId())==13 else (lepton.electronID("POG_SPRING15_25ns_v1_Veto"))'
     monoJetCtrlLepSkim.ptCuts = [40]
@@ -160,6 +160,7 @@ if saveFatJetIDVariables:
             NTupleVariable("puppiTau1", lambda x : x.userFloat("ak8PFJetsPuppiValueMap:NjettinessAK8PuppiTau1"), float, mcOnly=False, help="puppi tau1 for the AK08"),
             NTupleVariable("puppiTau2", lambda x : x.userFloat("ak8PFJetsPuppiValueMap:NjettinessAK8PuppiTau2"), float, mcOnly=False, help="puppi tau2 for the AK08"),
             NTupleVariable("puppiTau3", lambda x : x.userFloat("ak8PFJetsPuppiValueMap:NjettinessAK8PuppiTau3"), float, mcOnly=False, help="puppi tau3 for the AK08"),
+            NTupleVariable("jetArea", lambda x: x.jetArea(), float, mcOnly=False, help="jet area for fateJets"),
 
 ])
 
@@ -387,11 +388,11 @@ if scaleProdToLumi>0: # select only a subset of a sample, corresponding to a giv
         #if nfiles < 50: nfiles = min(4*nfiles, len(c.files))
         print "For component %s, will want %d/%d files; AAA %s" % (c.name, nfiles, len(c.files), "eoscms" not in c.files[0])
         c.files = c.files[:nfiles]
-        c.splitFactor = len(c.files)
+        c.splitFactor = len(c.files)/10
         c.fineSplitFactor = 1
 
 #json = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON.txt"
-json = "/cmshome/gellisim/CMSSW_8_0_20/src/CMGTools/MonoXAnalysis/cfg/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+json = "/cmshome/gellisim/CMSSW_8_0_20/src/CMGTools/MonoXAnalysis/cfg/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"#"/cmshome/gellisim/CMSSW_8_0_20/src/CMGTools/MonoXAnalysis/cfg/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 if False:
     is50ns = False
     selectedComponents = PrivateSamplesData
@@ -401,7 +402,7 @@ if False:
 
 if runData and not isTest: # For running on data
     ##run_ranges = [ (272021,275125) ]; useAAA=False; is50ns=False
-    run_ranges = [ (272021, 284068) ]; useAAA=False; is50ns=False
+    run_ranges = [ (273150, 275376) ]; useAAA=False; is50ns=False
     #print "Removing the SoftDrop and Puppi subjet collections (not yet in data)"
     #dmCoreSequence.remove(monoXSubJetPuppiAna)
     #dmCoreSequence.remove(monoXSubJetSoftDropAna)
@@ -412,7 +413,7 @@ if runData and not isTest: # For running on data
     ProcessingsAndRunRanges = []; Shorts = []
 
     
-#    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v1", [272760,272818] ) ); Shorts.append("23Sep2016_v1")
+    ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v1", [272760,272818] ) ); Shorts.append("Run2016B-23Sep2016_v1")
 
     ProcessingsAndRunRanges.append( ("Run2016B-23Sep2016-v3", [273150,275376] ) ); Shorts.append("Run2016B-23Sep2016-v3") #273017,275376
     ProcessingsAndRunRanges.append( ("Run2016C-23Sep2016-v1", [275420,276283] ) ); Shorts.append("Run2016C-23Sep2016-v1")
@@ -428,20 +429,20 @@ if runData and not isTest: # For running on data
 #    ProcessingsAndRunRanges.append( ("Run2016B-PromptReco-v2", [273150,275376] ) ); Shorts.append("PromptReco_v2")
 #    ProcessingsAndRunRanges.append( ("Run2016C-PromptReco-v2", [275420,276283] ) ); Shorts.append("PromptReco_v2")
 #    ProcessingsAndRunRanges.append( ("Run2016D-PromptReco-v2", [276315,276811] ) ); Shorts.append("PromptReco_v2")
-#    ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276827,277420] ) ); Shorts.append("PromptReco_v2")
-#    ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277776,278808] ) ); Shorts.append("PromptReco_v1")
-    ##ProcessingsAndRunRanges.append( ("Run2016G-PromptReco-v1", [278815,278820] ) ); Shorts.append("PromptReco_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016E-PromptReco-v2", [276830,277420] ) ); Shorts.append("PromptReco_v2")
+#    ProcessingsAndRunRanges.append( ("Run2016F-PromptReco-v1", [277820,278808] ) ); Shorts.append("PromptReco_v1")
+#    ProcessingsAndRunRanges.append( ("Run2016G-PromptReco-v1", [278816,280385] ) ); Shorts.append("PromptReco_v1")
 
     if diLepSkim == True:
         DatasetsAndTriggers.append( ("DoubleMuon", triggers_mumu_iso + triggers_mumu_ss + triggers_mumu_ht + triggers_3mu + triggers_3mu_alt + triggers_AllMonojet) )
         DatasetsAndTriggers.append( ("DoubleEG",   triggers_ee + triggers_ee_ht + triggers_3e) )
     if singleLepSkim == True or dibosonSkim == True:
-        DatasetsAndTriggers.append( ("SingleElectron", triggers_ee + triggers_ee_ht + triggers_3e + triggers_1e + triggers_1e_50ns) )
+        #DatasetsAndTriggers.append( ("SingleElectron", triggers_ee + triggers_ee_ht + triggers_3e + triggers_1e + triggers_1e_50ns) )
         DatasetsAndTriggers.append( ("SingleMuon", triggers_1mu_iso + triggers_mumu_iso + triggers_mumu_ss + triggers_mumu_ht + triggers_3mu + triggers_3mu_alt) )
         #DatasetsAndTriggers.append( ("SinglePhoton",   triggers_SinglePhoton) )
     if vGammaSkim == True:
-        DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
-        #DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
+        #DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
+        DatasetsAndTriggers.append( ("JetHT", trigger_JetHT + triggers_photon165_HE10 + triggers_photon175))
     if singlePhotonSkim == True:
         DatasetsAndTriggers.append( ("SinglePhoton", triggers_SinglePhoton) )
     if signalSkim == True:
@@ -473,7 +474,7 @@ if runData and not isTest: # For running on data
                                                  useAAA=useAAA)
                 print "Will process %s (%d files)" % (comp.name, len(comp.files))
                 print "\ttrigger sel %s, veto %s" % (triggers, vetos)
-                comp.splitFactor = len(comp.files)#/10#4 changed for data. Some file make crash the entire jobs. As I'm working in the Rome batch, is better to have many jobs than less but corrupted
+                comp.splitFactor = len(comp.files)/10#4 changed for data. Some file make crash the entire jobs. As I'm working in the Rome batch, is better to have many jobs than less but corrupted
                 comp.fineSplitFactor = 1
                 selectedComponents.append( comp )
             iproc += 1
@@ -488,16 +489,21 @@ if is50ns:
     pfChargedCHSjetAna.mcGT     = "Summer15_50nsV5_MC"
     pfChargedCHSjetAna.dataGT   = "Summer15_50nsV5_DATA"
 else: 
-    jetAna.mcGT   = [(-1,"Spring16_25nsV10_MC")]
-#    jetAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
-    monoXFatJetAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
-#    monoXFatJetAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
-    monoXPuppiJetAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
-#    monoXPuppiJetAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
-    monoXSubJetPuppiAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
-#    monoXSubJetPuppiAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
-    monoXSubJetSoftDropAna.mcGT = [(-1,"Spring16_25nsV10_MC")]
-#    monoXSubJetSoftDropAna.dataGT = [(1,"Spring16_25nsV10BCD_DATA"),(276831,"Spring16_25nsV10E_DATA"),(277772,"Spring16_25nsV10F_DATA"),(278802,"Spring16_25nsV10p2_DATA")]
+    jetAna.mcGT   = [(-1,"Summer16_23Sep2016V3_MC")]
+#    jetAna.dataGT   = [(-1,"Summer16_23Sep2016V3_DATA")]
+    jetAna.dataGT = [(1,"Summer16_23Sep2016BCDV3_DATA"),(276831,"Summer16_23Sep2016EFV3_DATA"),(278802,"Summer16_23Sep2016GV3_DATA"),(280919,"Summer16_23Sep2016HV3_DATA")]  
+    monoXFatJetAna.mcGT = [(-1,"Summer16_23Sep2016V3_MC")]
+#    monoXFatJetAna.dataGT = [(-1,"Summer16_23Sep2016V3_DATA")]
+    monoXFatJetAna.dataGT = [(1,"Summer16_23Sep2016BCDV3_DATA"),(276831,"Summer16_23Sep2016EFV3_DATA"),(278802,"Summer16_23Sep2016GV3_DATA"),(280919,"Summer16_23Sep2016HV3_DATA")]  
+    monoXPuppiJetAna.mcGT = [(-1,"Summer16_23Sep2016V3_MC")]
+#    monoXPuppiJetAna.dataGT = [(-1,"Summer16_23Sep2016V3_DATA")]
+    monoXPuppiJetAna.dataGT = [(1,"Summer16_23Sep2016BCDV3_DATA"),(276831,"Summer16_23Sep2016EFV3_DATA"),(278802,"Summer16_23Sep2016GV3_DATA"),(280919,"Summer16_23Sep2016HV3_DATA")] 
+    monoXSubJetPuppiAna.mcGT = [(-1,"Summer16_23Sep2016V3_MC")]
+#    monoXSubJetPuppiAna.dataGT = [(-1,"Summer16_23Sep2016V3_DATA")]
+    monoXSubJetPuppiAna.dataGT = [(1,"Summer16_23Sep2016BCDV3_DATA"),(276831,"Summer16_23Sep2016EFV3_DATA"),(278802,"Summer16_23Sep2016GV3_DATA"),(280919,"Summer16_23Sep2016HV3_DATA")]  
+    monoXSubJetSoftDropAna.mcGT = [(-1,"Summer16_23Sep2016V3_MC")]
+#    monoXSubJetSoftDropAna.dataGT = [(-1,"Summer16_23Sep2016V3_DATA")]
+    monoXSubJetSoftDropAna.dataGT = [(1,"Summer16_23Sep2016BCDV3_DATA"),(276831,"Summer16_23Sep2016EFV3_DATA"),(278802,"Summer16_23Sep2016GV3_DATA"),(280919,"Summer16_23Sep2016HV3_DATA")]
 
 if removeJetReCalibration:
     ## NOTE: jets will still be recalibrated, since calculateSeparateCorrections is True,
