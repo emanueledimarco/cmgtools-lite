@@ -17,7 +17,8 @@ Top_MJ         = [ TTJets, TToLeptons_sch_amcatnlo, TBar_tWch, T_tWch ]
 DiBosons_MJ    = [ WW, WZ, ZZ ]
 
 #diboson analysis samples
-TTBar          = [ TT_pow_ext3 ]
+#TT_pow_Summer2016 = kreator.makeMCComponent("TT_pow_Summer2016", "/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", "CMS", ".*root", 831.76)
+#TTBar          = [ TT_pow_Summer2016 ]
 WJetsToLNu_HT     = [ WJetsToLNu_HT100to200, WJetsToLNu_HT200to400, WJetsToLNu_HT400to600, WJetsToLNu_HT600to800, WJetsToLNu_HT800to1200_ext, WJetsToLNu_HT1200to2500, WJetsToLNu_HT2500toInf ]
 SingleTop      = [ TToLeptons_sch_amcatnlo, TBar_tWch, T_tWch ]
 
@@ -30,15 +31,15 @@ WJetsToLNu_amcatnlo = [ WJetsToLNu ]
 GammaJets = GJets
 VV_VBosonGamma = VV_VGamma
 
-mcSamples_monojet_Asymptotic25ns = ZJetsToNuNu_MJ + VJets_MJ + Top_MJ + DiBosons_MJ + GJetsHT + EWKV2Jets
-mcSamples_diboson_Asymptotic25ns = TTBar #SingleTop + WJetsToLNu_HT + DiBosons_MJ# + TTBar
-mcSamples_zgamma_Asymptotic25ns = TTBar_amcatnlo + WJetsToLNu_amcatnlo + QCDHT + GJetsHT + VV_VBosonGamma + TTGammaJets
+mcSamples_monojet_Asymptotic25ns = ZJetsToNuNu_MJ + VJets_MJ + Top_MJ + DiBosons_MJ + QCDHT + GJetsHT
+mcSamples_diboson_Asymptotic25ns = lastWTagging#SingleTop + WJetsToLNu_HT + DiBosons_MJ# + TTBar
+mcSamples_zgamma_Asymptotic25ns = TTBar_amcatnlo + WJetsToLNu_amcatnlo + QCDHT + GammaJets + VV_VBosonGamma + TTGammaJets#GJetsHT + VV_VBosonGamma + TTGammaJets
 mcSamples_zgamma_Signal = VGamma_signal
 
 ### ----------------------------- summary ----------------------------------------     
 mcSamples_monojet = mcSamples_monojet_Asymptotic25ns
 mcSamples_diboson = mcSamples_diboson_Asymptotic25ns
-mcSamples_zgamma = mcSamples_zgamma_Signal
+mcSamples_zgamma = mcSamples_zgamma_Signal#Asymptotic25ns#mcSamples_zgamma_Signal
 
 from CMGTools.TTHAnalysis.setup.Efficiencies import *
 dataDir = "$CMSSW_BASE/src/CMGTools/TTHAnalysis/data"

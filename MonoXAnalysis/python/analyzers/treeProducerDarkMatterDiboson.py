@@ -30,4 +30,10 @@ dmDiboson_collections.update({
             "subJetPuppi"     : NTupleCollection("PuppiSubJet",  fourVectorType,       20, help="Puppi ak08 subJets, sorted by pt"),
             "subJetSoftDrop"  : NTupleCollection("SoftDropSubJet",  fourVectorType,       20, help="SoftDrop ak08 subJets, sorted by pt"),
             "customPuppiAK8"  : NTupleCollection("customPuppiAK8",  puppiFatJetType,       20, help="Puppi ak08 Jets, sorted by pt"), 
+            "customPuppiSoftDropAK8" : NTupleCollection("customPuppiSoftDropAK8",  puppiFatJetType, 20, help="Puppi SoftDrop ak08 Jets, sorted by pt"),
+            "genFatJet"      : NTupleCollection("genFatJet", genParticleType, 20, help="FatJet gen level"),
 })
+
+genParticleWithLinksType.addVariables([
+        NTupleVariable("isPromptFinalState", lambda x: x.isPromptFinalState() if abs(x.pdgId())==22 else -1., int, help="prompt final state photons"),
+])
