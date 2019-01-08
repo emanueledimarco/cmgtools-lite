@@ -1,0 +1,5 @@
+# DY xsec is:
+# 1921.8*3 from FEWZ        => https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV
+# 2008.4*3 from MG5 aMC@NLO => AN2017/203 v4, SMP-17-010
+# 1975.0*3 from POWHEG      => AN2017/203 v4, SMP-17-010
+Z    : DYJetsToLL_M50_NLO* : 2008.4*3; FillColor=ROOT.kAzure+2, Label="Z", NormSystematic=0.04

@@ -1,0 +1,35 @@
+## MAIN SAMPLES
+#incl_sigincl          : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-sigincl.txt", SkipMe=True
+
+incl_sig              : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-sigInclCharge_binned_eta_pt.txt"
+incl_bkgmc            : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-bkgmc.txt"
+incl_dy               : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-dy.txt"
+
+incl_datafakes        : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-data.txt", FakeRate="w-helicity-13TeV/wmass_mu/FRfast/fakeRate_application_data.txt", Label="Fakes", FillColor=ROOT.kGray+2, FillStyle=3005, NormSystematic=0.30, PostFix='_fakes'
+
+## DATA
+incl_data             : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-data.txt"
+
+## ## SYSTEMATICS 
+## # muon syst
+
+# lepton efficiency systematics
+incl_sig_lepeff_Up      : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-sigInclCharge_binned_eta_pt.txt",   AddWeight="lepSFRelUp(LepGood1_pdgId\,LepGood1_pt\,LepGood1_eta\,LepGood1_SF1\,LepGood1_SF2\,LepGood1_SF3)", SkipMe=True, PostFix='_lepeff_Up'
+incl_sig_lepeff_Dn      : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-sigInclCharge_binned_eta_pt.txt",   AddWeight="lepSFRelDn(LepGood1_pdgId\,LepGood1_pt\,LepGood1_eta\,LepGood1_SF1\,LepGood1_SF2\,LepGood1_SF3)", SkipMe=True, PostFix='_lepeff_Dn'
+
+# muon scale systematics 
+incl_sig_muscale_Up   : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-sigInclCharge_binned_eta_pt.txt", FakeRate="w-helicity-13TeV/wmass_mu/variations/doSyst_lepScaleUp_xsec.txt" , SkipMe=True, PostFix='_muscale_Up'
+incl_sig_muscale_Dn   : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-80X-wmunu-sigInclCharge_binned_eta_pt.txt", FakeRate="w-helicity-13TeV/wmass_mu/variations/doSyst_lepScaleDn_xsec.txt" , SkipMe=True, PostFix='_muscale_Dn'
+
+
+# Fake syst
+ 
+## # fake-lepton background systematics (shape systematics)
+incl_datafakes_FRmu_slope_Up : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-data.txt", FakeRate="w-helicity-13TeV/wmass_mu/fakerate-vars/fakeRate-frdata-mu-slopeup.txt"  , SkipMe=True, PostFix='_fakes_FRmu_slope_Up'
+incl_datafakes_FRmu_slope_Dn : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-data.txt", FakeRate="w-helicity-13TeV/wmass_mu/fakerate-vars/fakeRate-frdata-mu-slopedown.txt", SkipMe=True, PostFix='_fakes_FRmu_slope_Dn'
+
+## continuous shape in eta
+incl_datafakes_FRmu_continuous_Up : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-data.txt", FakeRate="w-helicity-13TeV/wmass_mu/fakerate-vars/fakeRate-frdata-mu-continuousup.txt"  , SkipMe=True, PostFix='_fakes_FRmu_continuous_Up'
+incl_datafakes_FRmu_continuous_Dn : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-data.txt", FakeRate="w-helicity-13TeV/wmass_mu/fakerate-vars/fakeRate-frdata-mu-continuousdown.txt", SkipMe=True, PostFix='_fakes_FRmu_continuous_Dn'
+
+#incl_datafakes_FRmu_awayJetPt45 : + ; IncludeMca="w-helicity-13TeV/wmass_mu/mca-includes/mca-data.txt", FakeRate="w-helicity-13TeV/wmass_mu/fakerate-vars/fakeRate_application_jetPt45_data.txt", SkipMe=True, PostFix='_fakes_FRmu_awayJetPt45'

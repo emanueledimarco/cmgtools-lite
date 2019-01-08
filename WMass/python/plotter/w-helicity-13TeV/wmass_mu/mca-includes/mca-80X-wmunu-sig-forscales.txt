@@ -1,0 +1,49 @@
+Wplus_central  : WJetsToLNu_* : (3.*20508.9)*1.           : genw_decayId==14 ; FillColor=ROOT.kGray+1  ,  Label="W^{+} central"
+Wminus_central : WJetsToLNu_* : (3.*20508.9)*1.           : genw_decayId==14 ; FillColor=ROOT.kGray+1  ,  Label="W^{-} central"
+Wboth_central  : WJetsToLNu_* : (3.*20508.9)*1.           : genw_decayId==14 ; FillColor=ROOT.kGray+1  ,  Label="W^{\#pm} central"
+Zboth_central  : DYJetsToLL_M50_* : 1921.8*3              :           1      ; FillColor=ROOT.kGray+1  ,  Label="Z^{\#pm} central"
+
+Wplus_qcdUp    : WJetsToLNu_* : (3.*20508.9)*qcd_muRmuFUp : genw_decayId==14 ; FillColor=ROOT.kBlue+1 ,  Label="W^{+} \#mu_{R\,F} Up"
+Wplus_qcdDn    : WJetsToLNu_* : (3.*20508.9)*qcd_muRmuFDn : genw_decayId==14 ; FillColor=ROOT.kBlue-4 ,  Label="W^{+} \#mu_{R\,F} Dn"
+
+Wminus_qcdUp   : WJetsToLNu_* : (3.*20508.9)*qcd_muRmuFUp : genw_decayId==14 ; FillColor=ROOT.kBlue+1 ,  Label="W^{-} \#mu_{R\,F} Up"
+Wminus_qcdDn   : WJetsToLNu_* : (3.*20508.9)*qcd_muRmuFDn : genw_decayId==14 ; FillColor=ROOT.kBlue-4 ,  Label="W^{-} \#mu_{R\,F} Dn"
+
+Wboth_qcdUp    : WJetsToLNu_* : (3.*20508.9)*qcd_muRmuFUp : genw_decayId==14 ; FillColor=ROOT.kBlue+1 ,  Label="W^{\#pm} \#mu_{R\,F} Up"
+Wboth_qcdDn    : WJetsToLNu_* : (3.*20508.9)*qcd_muRmuFDn : genw_decayId==14 ; FillColor=ROOT.kBlue-4 ,  Label="W^{\#pm} \#mu_{R\,F} Dn"
+Zboth_qcdUp    : DYJetsToLL_M50_* : (1921.8*3)*qcd_muRmuFUp :      1           ; FillColor=ROOT.kBlue+1 ,  Label="Z^{\#pm} \#mu_{R\,F} Up"
+Zboth_qcdDn    : DYJetsToLL_M50_* : (1921.8*3)*qcd_muRmuFDn :      1           ; FillColor=ROOT.kBlue-4 ,  Label="Z^{\#pm} \#mu_{R\,F} Dn"
+
+Wplus_muRUp    : WJetsToLNu_* : (3.*20508.9)*qcd_muRUp    : genw_decayId==14 ; FillColor=ROOT.kGreen+2 ,  Label="W^{+} \#mu_{R} Up"
+Wplus_muRDn    : WJetsToLNu_* : (3.*20508.9)*qcd_muRDn    : genw_decayId==14 ; FillColor=ROOT.kGreen-1 ,  Label="W^{+} \#mu_{R} Dn"
+
+Wminus_muRUp   : WJetsToLNu_* : (3.*20508.9)*qcd_muRUp    : genw_decayId==14 ; FillColor=ROOT.kGreen+2 ,  Label="W^{-} \#mu_{R} Up"
+Wminus_muRDn   : WJetsToLNu_* : (3.*20508.9)*qcd_muRDn    : genw_decayId==14 ; FillColor=ROOT.kGreen-1 ,  Label="W^{-} \#mu_{R} Dn"
+
+Wboth_muRUp    : WJetsToLNu_* : (3.*20508.9)*qcd_muRUp    : genw_decayId==14 ; FillColor=ROOT.kGreen+2 ,  Label="W^{\#pm} \#mu_{R} Up"
+Wboth_muRDn    : WJetsToLNu_* : (3.*20508.9)*qcd_muRDn    : genw_decayId==14 ; FillColor=ROOT.kGreen-1 ,  Label="W^{\#pm} \#mu_{R} Dn"
+Zboth_muRUp    : DYJetsToLL_M50_* : (1921.8*3.)*qcd_muRUp    : 1 ; FillColor=ROOT.kGreen+2 ,  Label="Z^{\#pm} \#mu_{R} Up"
+Zboth_muRDn    : DYJetsToLL_M50_* : (1921.8*3.)*qcd_muRDn    : 1 ; FillColor=ROOT.kGreen-1 ,  Label="Z^{\#pm} \#mu_{R} Dn"
+
+Wplus_muFUp    : WJetsToLNu_* : (3.*20508.9)*qcd_muFUp    : genw_decayId==14 ; FillColor=ROOT.kRed+1 ,  Label="W^{+} \#mu_{F} Up"
+Wplus_muFDn    : WJetsToLNu_* : (3.*20508.9)*qcd_muFDn    : genw_decayId==14 ; FillColor=ROOT.kRed-4 ,  Label="W^{+} \#mu_{F} Dn"
+
+Wminus_muFUp   : WJetsToLNu_* : (3.*20508.9)*qcd_muFUp    : genw_decayId==14 ; FillColor=ROOT.kRed+1 ,  Label="W^{-} \#mu_{F} Up"
+Wminus_muFDn   : WJetsToLNu_* : (3.*20508.9)*qcd_muFDn    : genw_decayId==14 ; FillColor=ROOT.kRed-4 ,  Label="W^{-} \#mu_{F} Dn"
+
+Wboth_muFUp    : WJetsToLNu_* : (3.*20508.9)*qcd_muFUp    : genw_decayId==14 ; FillColor=ROOT.kRed+1 ,  Label="W^{\#pm} \#mu_{F} Up"
+Wboth_muFDn    : WJetsToLNu_* : (3.*20508.9)*qcd_muFDn    : genw_decayId==14 ; FillColor=ROOT.kRed-4 ,  Label="W^{\#pm} \#mu_{F} Dn"
+Zboth_muFUp    : DYJetsToLL_M50_* : (1921.8*3.)*qcd_muFUp    : 1 ; FillColor=ROOT.kRed+1 ,  Label="Z^{\#pm} \#mu_{F} Up"
+Zboth_muFDn    : DYJetsToLL_M50_* : (1921.8*3.)*qcd_muFDn    : 1 ; FillColor=ROOT.kRed-4 ,  Label="Z^{\#pm} \#mu_{F} Dn"
+
+Wplus_wptSlopeUp    : WJetsToLNu_* : (3.*20508.9)*wpt_slope_weight(genw_pt,1.05,-0.005)   : genw_decayId==14 ; FillColor=ROOT.kYellow+1 ,  Label="W^{+} p_{T}^{W} Up"
+Wplus_wptSlopeDn    : WJetsToLNu_* : (3.*20508.9)*wpt_slope_weight(genw_pt,0.95,0.005)    : genw_decayId==14 ; FillColor=ROOT.kYellow-4 ,  Label="W^{+} p_{T}^{W} Dn"
+
+Wminus_wptSlopeUp   : WJetsToLNu_* : (3.*20508.9)*wpt_slope_weight(genw_pt,1.05,-0.005)    : genw_decayId==14 ; FillColor=ROOT.kYellow+1 ,  Label="W^{-} p_{T}^{W} Up"
+Wminus_wptSlopeDn   : WJetsToLNu_* : (3.*20508.9)*wpt_slope_weight(genw_pt,0.95,0.005)   : genw_decayId==14 ; FillColor=ROOT.kYellow-4 ,  Label="W^{-} p_{T}^{W} Dn"
+
+Wboth_wptSlopeUp    : WJetsToLNu_* : (3.*20508.9)*wpt_slope_weight(genw_pt,1.05,-0.005)    : genw_decayId==14 ; FillColor=ROOT.kYellow+1 ,  Label="W^{\#pm} p_{T}^{W} Up"
+Wboth_wptSlopeDn    : WJetsToLNu_* : (3.*20508.9)*wpt_slope_weight(genw_pt,0.95,0.005)   : genw_decayId==14 ; FillColor=ROOT.kYellow-4 ,  Label="W^{\#pm} p_{T}^{W} Dn"
+
+
+

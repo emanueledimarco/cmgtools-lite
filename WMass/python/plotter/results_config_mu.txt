@@ -1,0 +1,21 @@
+basedir = '/afs/cern.ch/work/m/mdunser/public/cmssw/w-helicity-13TeV/CMSSW_8_0_25/src/CMGTools/WMass/python/plotter/cards/helicity_2018_11_13_cardsAFS/'
+cardsdir = '/afs/cern.ch/work/m/mdunser/public/cmssw/w-helicity-13TeV/CMSSW_8_0_25/src/CMGTools/WMass/python/plotter/cards/helicity_2018_11_13_cardsAFS/'
+
+both_floatingPOIs_hessian = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15.root'
+both_floatingPOIs_hessian_withSyst_noBBB = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15_withSystematic_noBinByBin.root'
+both_floatingPOIs_hessian_noSyst_withBBB = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15_noSystematic_withBinByBin.root'
+both_floatingPOIs_hessian_noSyst_noBBB   = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15_noSystematic_noBinByBin.root'
+both_floatingPOIs_hessian_mt0 = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15_fullSystematics_mt0.root'
+both_floatingPOIs_hessian = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15.root'
+both_floatingPOIs_toys    = basedir+'/toys/fitresults_both_floatingPOIs_toys.root'
+
+both_fixedPOIs_hessian    = basedir+'/fitresults_both_fixedPOIs_hessian_fix14and15.root'
+both_fixedPOIs_toys       = basedir+'/toys/fitresults_both_fixedPOIs_toys.root'
+
+shapes_files = basedir+'/Wmu_shapes.root'
+
+xsecs_plus  = basedir+'/Wmu_plus_shapes_xsec.root'
+xsecs_minus = basedir+'/Wmu_minus_shapes_xsec.root'
+
+postfit_plus  = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15_postfit.root'
+postfit_minus = basedir+'/fitresults_both_floatingPOIs_hessian_fix14and15_postfit.root'

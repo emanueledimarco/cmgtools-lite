@@ -1,0 +1,170 @@
+QCD: QCD_Pt20to30_EMEnriched                             : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+QCD: QCD_Pt30to50_EMEnriched+QCD_Pt30to50_EMEnriched_ext : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+QCD: QCD_Pt50to80_EMEnriched_ext                         : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+QCD: QCD_Pt80to120_EMEnriched_ext                        : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+
+QCD : QCD_Pt_170to250_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+QCD : QCD_Pt_20to30_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+QCD : QCD_Pt_250toInf_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+QCD : QCD_Pt_30to80_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+QCD : QCD_Pt_80to170_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD", NormSystematic=1.00
+
+# QCD_EM: QCD_Pt20to30_EMEnriched                             : xsec; FillColor=ROOT.kGray+1, Label="QCD_EM", NormSystematic=1.00
+# QCD_EM: QCD_Pt30to50_EMEnriched+QCD_Pt30to50_EMEnriched_ext : xsec; FillColor=ROOT.kGray+1, Label="QCD_EM", NormSystematic=1.00
+# QCD_EM: QCD_Pt50to80_EMEnriched_ext                         : xsec; FillColor=ROOT.kGray+1, Label="QCD_EM", NormSystematic=1.00
+# QCD_EM: QCD_Pt80to120_EMEnriched_ext                        : xsec; FillColor=ROOT.kGray+1, Label="QCD_EM", NormSystematic=1.00
+
+# QCD_bc : QCD_Pt_170to250_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD_bc", NormSystematic=1.00
+# QCD_bc : QCD_Pt_20to30_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD_bc", NormSystematic=1.00
+# QCD_bc : QCD_Pt_250toInf_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD_bc", NormSystematic=1.00
+# QCD_bc : QCD_Pt_30to80_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD_bc", NormSystematic=1.00
+# QCD_bc : QCD_Pt_80to170_bcToE : xsec; FillColor=ROOT.kGray, Label="QCD_bc", NormSystematic=1.00
+
+W   : WJetsToLNu_NLO* :  3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge!=-24; FillColor=ROOT.kRed+2, Label="W", NormSystematic=0.038
+
+W_less   : WJetsToLNu_NLO_part* :  3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge!=-24; FillColor=ROOT.kRed+2, Label="W", NormSystematic=0.038
+
+Wincl   : WJetsToLNu_NLO* :  3.*20508.9 ; FillColor=ROOT.kRed+2, Label="W", NormSystematic=0.038
+
+#W   : WJetsToLNu_NLO_part1 + WJetsToLNu_NLO_part2 + WJetsToLNu_NLO_part3 + WJetsToLNu_NLO_ext_part1 + WJetsToLNu_NLO_ext_part2 + WJetsToLNu_NLO_ext_part3: 3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge!=-24; FillColor=ROOT.kRed+2, Label="W", NormSystematic=0.038
+
+#Wincl   : WJetsToLNu_NLO_part1 + WJetsToLNu_NLO_part2 + WJetsToLNu_NLO_part3 + WJetsToLNu_NLO_ext_part1 + WJetsToLNu_NLO_ext_part2 + WJetsToLNu_NLO_ext_part3: 3.*20508.9 ; FillColor=ROOT.kRed+2, Label="W", NormSystematic=0.038
+
+
+W_LO   : WJetsToLNu_LO* :  3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge!=-24; FillColor=ROOT.kRed+2, Label="W (Madgraph)", NormSystematic=0.038
+
+data_fakes: SingleElectron_07Aug17_Run2016* : 1 ; FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes (data)", FillColor=ROOT.kGray, NormSystematic=0.30
+
+data_fakes_awayJetPt45: SingleElectron_07Aug17_Run2016* : 1 ; FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-jetpt_syst.txt", Label="Fakes (jetPt45)", FillColor=ROOT.kRed+2, NormSystematic=0.30
+
+data_fakes_EBp_0p0_1p0: SingleElectron_07Aug17_Run2016* : LepGood1_eta > 0.0 && LepGood1_eta < 1.0 ; FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes EB+ in", FillColor=ROOT.kGray, NormSystematic
+=0.10
+
+data_fakes_EBp_1p0_1p5: SingleElectron_07Aug17_Run2016* : LepGood1_eta > 1.0 && LepGood1_eta < 1.5 ; FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes EB+ out", FillColor=ROOT.kGray, NormSystematic
+=0.20
+
+data_fakes_EBp_1p5_2p5: SingleElectron_07Aug17_Run2016* : LepGood1_eta > 1.5 && LepGood1_eta < 2.5 ; FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes EE+", FillColor=ROOT.kGray, NormSystematic
+=0.30
+
+data_fakes_EBm_0p0_1p0: SingleElectron_07Aug17_Run2016* : LepGood1_eta > -1.0 && LepGood1_eta < 0.0 ; FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes EB- in", FillColor=ROOT.kGray, NormSystematic
+=0.10
+
+data_fakes_EBm_1p0_1p5: SingleElectron_07Aug17_Run2016* : LepGood1_eta > -1.5 && LepGood1_eta < -1.0 ; FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes EB- out", FillColor=ROOT.kGray, NormSystematic
+=0.20
+
+data_fakes_EBm_1p5_2p5: SingleElectron_07Aug17_Run2016* : LepGood1_eta > -2.5 && LepGood1_eta < -1.5 ; FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes EE-", FillColor=ROOT.kGray, NormSystematic
+=0.30
+
+
+Z    : DYJetsToLL_M50_NLO* : 2008.4*3; FillColor=ROOT.kAzure+2, Label="Z", NormSystematic=0.04
+Z_less    : DYJetsToLL_M50_NLO_part* : 2008.4*3; FillColor=ROOT.kAzure+2, Label="Z", NormSystematic=0.04
+Z_LO : DYJetsToLL_M50_LO_* : 5765.40 ; FillColor=ROOT.kAzure+2, Label="Z (Madgraph)", NormSystematic=0.04
+
+Top  : TTJets_SingleLeptonFromT_* :  xsec; FillColor=ROOT.kGreen+2, Label="Top", NormSystematic=0.09
+Top  : TTJets_SingleLeptonFromTbar_* :  xsec; FillColor=ROOT.kGreen+2, Label="Top", NormSystematic=0.09
+Top  : TToLeptons_sch_amcatnlo :      xsec; FillColor=ROOT.kGreen+2, Label="Top", NormSystematic=0.04
+Top  : T_tch_powheg_part* :     xsec;  FillColor=ROOT.kGreen+2, Label="Top", NormSystematic=0.04
+Top  : TBar_tch_powheg_part* :     xsec;  FillColor=ROOT.kGreen+2, Label="Top", NormSystematic=0.04
+Top  : T_tWch_ext :      xsec; FillColor=ROOT.kGreen+2, Label="Top", NormSystematic=0.06
+Top  : TBar_tWch_ext :   xsec; FillColor=ROOT.kGreen+2, Label="Top", NormSystematic=0.06
+DiBosons : WW+WW_ext : xsec;      FillColor=ROOT.kViolet+2, Label="DiBosons", NormSystematic=0.03
+DiBosons : WZ+WZ_ext : xsec; FillColor=ROOT.kViolet+2, Label="DiBosons", NormSystematic=0.05
+DiBosons : ZZ+ZZ_ext : xsec; FillColor=ROOT.kViolet+2, Label="DiBosons", NormSystematic=0.05
+
+TopVV  : TTJets_SingleLeptonFromT_* :  xsec; FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.09
+TopVV  : TTJets_SingleLeptonFromTbar_* :  xsec; FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.09
+TopVV  : TToLeptons_sch_amcatnlo :      xsec; FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.04
+TopVV  : T_tch_powheg_part* :     xsec;  FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.04
+TopVV  : TBar_tch_powheg_part* :     xsec;  FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.04
+TopVV  : T_tWch_ext :      xsec; FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.06
+TopVV  : TBar_tWch_ext :   xsec; FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.06
+TopVV : WW+WW_ext : xsec;      FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.03
+TopVV : WZ+WZ_ext : xsec; FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.05
+TopVV : ZZ+ZZ_ext : xsec; FillColor=ROOT.kGreen+2, Label="Top + VV", NormSystematic=0.05
+
+TauTopVV  : NoSkim_WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId != 12 && genw_decayId != 14 ; FillColor=ROOT.kSpring+9   ,  Label="other EWK", NormSystematic=0.038
+TauTopVV  : TTJets_SingleLeptonFromT_* :  xsec; FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.09
+TauTopVV  : TTJets_SingleLeptonFromTbar_* :  xsec; FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.09
+TauTopVV  : TToLeptons_sch_amcatnlo :      xsec; FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.04
+TauTopVV  : T_tch_powheg_part* :     xsec;  FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.04
+TauTopVV  : TBar_tch_powheg_part* :     xsec;  FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.04
+TauTopVV  : T_tWch_ext :      xsec; FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.06
+TauTopVV  : TBar_tWch_ext :   xsec; FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.06
+TauTopVV : WW+WW_ext : xsec;      FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.03
+TauTopVV : WZ+WZ_ext : xsec; FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.05
+TauTopVV : ZZ+ZZ_ext : xsec; FillColor=ROOT.kGreen+2, Label="other EWK", NormSystematic=0.05
+
+
+TauDecaysW : NoSkim_WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId != 12 && genw_decayId != 14 ; FillColor=ROOT.kSpring+9   ,  Label="W\#rightarrow\#tau\#nu", NormSystematic=0.038
+
+TauDecaysW_less : NoSkim_WJetsToLNu_NLO_part* : 3.*20508.9    : genw_decayId != 12 && genw_decayId != 14 ; FillColor=ROOT.kSpring+9   ,  Label="W\#rightarrow\#tau\#nu", NormSystematic=0.038
+
+
+WFlips  : WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge==-24 ; FillColor=ROOT.kGray+1  , Label="W charge flips"
+#WFlips  : WJetsToLNu_NLO_part1 + WJetsToLNu_NLO_part2 + WJetsToLNu_NLO_part3 + WJetsToLNu_NLO_ext_part1 + WJetsToLNu_NLO_ext_part2 + WJetsToLNu_NLO_ext_part3 : 3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge==-24 ; FillColor=ROOT.kGray+1  , Label="W charge flips"
+
+data: SingleElectron_07Aug17_Run2016*
+
+
+#data_noJson: SingleElectron_07Aug17_Run2016* : 1 ; FakeRate="w-helicity-13TeV/wmass_e/dataNoJson.txt", Label="data noJson", FillColor=ROOT.kGreen+2, NormSystematic=0.30
+
+
+EWK  : WJetsToLNu_NLO_part1 + WJetsToLNu_NLO_part2 + WJetsToLNu_NLO_part3 + WJetsToLNu_NLO_ext_part1 + WJetsToLNu_NLO_ext_part2 + WJetsToLNu_NLO_ext_part3: 3.*20508.9 ; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.038
+EWK  : DYJetsToLL_M50_NLO* : 2008.4*3; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.04
+EWK  : NoSkim_WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId != 12 && genw_decayId != 14 ; FillColor=ROOT.kSpring+9   ,  Label="W\#rightarrow\#tau\#nu", NormSystematic=0.038
+EWK  : TTJets_SingleLeptonFromT_* :  xsec; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.09
+EWK  : TTJets_SingleLeptonFromTbar_* :  xsec; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.09
+EWK  : TToLeptons_sch_amcatnlo :      xsec; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.04
+EWK  : T_tch_powheg_part* :     xsec;  FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.04
+EWK  : TBar_tch_powheg_part* :     xsec;  FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.04
+EWK  : T_tWch_ext :      xsec; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.06
+EWK  : TBar_tWch_ext :   xsec; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.06
+EWK : WW+WW_ext : xsec;      FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.03
+EWK : WZ+WZ_ext : xsec; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.05
+EWK : ZZ+ZZ_ext : xsec; FillColor=ROOT.kRed+2, Label="EWK", NormSystematic=0.05
+
+EWK_bkg  : DYJetsToLL_M50_NLO* : 2008.4*3; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+#EWK_bkg  : NoSkim_WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId != 12 && genw_decayId != 14 ; FillColor=ROOT.kSpring+9   ,  Label="W\#rightarrow\#tau\#nu", NormSystematic=0.038
+EWK_bkg  : TTJets_SingleLeptonFromT_* :  xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.09
+EWK_bkg  : TTJets_SingleLeptonFromTbar_* :  xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.09
+EWK_bkg  : TToLeptons_sch_amcatnlo :      xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg  : T_tch_powheg_part* :     xsec;  FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg  : TBar_tch_powheg_part* :     xsec;  FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg  : T_tWch_ext :      xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.06
+EWK_bkg  : TBar_tWch_ext :   xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.06
+EWK_bkg : WW+WW_ext : xsec;      FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.03
+EWK_bkg : WZ+WZ_ext : xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.05
+EWK_bkg : ZZ+ZZ_ext : xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.05
+
+
+EWK_bkg_andTau  : DYJetsToLL_M50_NLO* : 2008.4*3; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_andTau  : NoSkim_WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId != 12 && genw_decayId != 14 ; FillColor=ROOT.kSpring+9, Label="EWK + top", NormSystematic=0.038
+EWK_bkg_andTau  : TTJets_SingleLeptonFromT_* :  xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.09
+EWK_bkg_andTau  : TTJets_SingleLeptonFromTbar_* :  xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.09
+EWK_bkg_andTau  : TToLeptons_sch_amcatnlo :      xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_andTau  : T_tch_powheg_part* :     xsec;  FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_andTau  : TBar_tch_powheg_part* :     xsec;  FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_andTau  : T_tWch_ext :      xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.06
+EWK_bkg_andTau  : TBar_tWch_ext :   xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.06
+EWK_bkg_andTau : WW+WW_ext : xsec;      FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.03
+EWK_bkg_andTau : WZ+WZ_ext : xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.05
+EWK_bkg_andTau : ZZ+ZZ_ext : xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.05
+
+EWK_bkg_Full  : DYJetsToLL_M50_NLO* : 2008.4*3; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_Full  : WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge==-24 ; FillColor=ROOT.kAzure+2  , Label="EWK + top"
+EWK_bkg_Full  : NoSkim_WJetsToLNu_NLO* : 3.*20508.9    : genw_decayId != 12 && genw_decayId != 14 ; FillColor=ROOT.kAzure+2   ,  Label="EWK + top", NormSystematic=0.038
+EWK_bkg_Full  : TTJets_SingleLeptonFromT_* :  xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.09
+EWK_bkg_Full  : TTJets_SingleLeptonFromTbar_* :  xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.09
+EWK_bkg_Full  : TToLeptons_sch_amcatnlo :      xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_Full  : T_tch_powheg_part* :     xsec;  FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_Full  : TBar_tch_powheg_part* :     xsec;  FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.04
+EWK_bkg_Full  : T_tWch_ext :      xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.06
+EWK_bkg_Full  : TBar_tWch_ext :   xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.06
+EWK_bkg_Full : WW+WW_ext : xsec;      FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.03
+EWK_bkg_Full : WZ+WZ_ext : xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.05
+EWK_bkg_Full : ZZ+ZZ_ext : xsec; FillColor=ROOT.kAzure+2, Label="EWK + top", NormSystematic=0.05
+
+# 
+W_nomi   : WJetsToLNu_NLO_* :  3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge!=-24; FillColor=ROOT.kBlack, Label="W", NormSystematic=0.001
+W_mWup50   : WJetsToLNu_NLO_* :  3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge!=-24; FillColor=ROOT.kRed+2, Label="m_{W} +50 MeV", NormSystematic=0.001, AddWeight="mass_80470"
+W_mWdn50   : WJetsToLNu_NLO_* :  3.*20508.9 : genw_decayId == 12 && LepGood1_mcMatchId*LepGood1_charge!=-24; FillColor=ROOT.kGreen+2, Label="m_{W} -50 MeV", NormSystematic=0.001, AddWeight="mass_80370"

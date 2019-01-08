@@ -1,0 +1,40 @@
+## MAIN SAMPLES
+
+#incl_sig      : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-sigInclCharge.txt"
+incl_sig      : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-sigInclCharge_binned_eta_pt.txt"
+incl_flips    : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-flips.txt"
+incl_bkgmc    : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-bkgmc.txt"
+incl_dy       : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-dy.txt"
+incl_datafakes: + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakeRate-frdata_smooth.txt", Label="Fakes", FillColor=ROOT.kGray+2, FillStyle=3005, NormSystematic=0.30, PostFix='_fakes'
+
+## DATA
+incl_data : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt"
+
+## SYSTEMATICS 
+
+# lepton efficiency systematics
+incl_sig_lepeff_Up      : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-sigInclCharge_binned_eta_pt.txt",   AddWeight="lepSFRelUp(LepGood1_pdgId\,LepGood1_pt\,LepGood1_eta\,LepGood1_SF1\,LepGood1_SF2\,LepGood1_SF3)", SkipMe=True, PostFix='_lepeff_Up'
+incl_sig_lepeff_Dn      : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-sigInclCharge_binned_eta_pt.txt",   AddWeight="lepSFRelDn(LepGood1_pdgId\,LepGood1_pt\,LepGood1_eta\,LepGood1_SF1\,LepGood1_SF2\,LepGood1_SF3)", SkipMe=True, PostFix='_lepeff_Dn'
+
+# electron scale systematics 
+incl_sig_elescale_Up   : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-sigInclCharge_binned_eta_pt.txt", FakeRate="w-helicity-13TeV/wmass_e/fr-includes/doSyst_lepScaleUp_xsec.txt" , SkipMe=True, PostFix='_elescale_Up'
+incl_sig_elescale_Dn   : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-80X-wenu-sigInclCharge_binned_eta_pt.txt", FakeRate="w-helicity-13TeV/wmass_e/fr-includes/doSyst_lepScaleDn_xsec.txt" , SkipMe=True, PostFix='_elescale_Dn'
+
+
+
+# fake-lepton background systematics (shape systematics)
+# if fitting with pol1, account for change in slope
+incl_datafakes_FRe_slope_Up : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-ptup.txt", SkipMe=True, PostFix='_fakes_FRe_slope_Up'
+incl_datafakes_FRe_slope_Dn : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-ptdown.txt", SkipMe=True, PostFix='_fakes_FRe_slope_Dn'
+
+# fake-lepton background systematics due to change of awayJet_pt from 30 (nominal) to 45 (just a random value we used)
+# it doesn't have an Up and Down variation, it will be made symmetric as we do for PDF  variations
+#incl_datafakes_FRe_awayJetPt45 : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-jetpt_syst.txt", SkipMe=True, PostFix='_fakes_FRe_awayJetPt45'
+
+# norm vs eta and pt as shape
+incl_datafakes_FRe_continuous_Up : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-normup.txt", SkipMe=True, PostFix='_fakes_FRe_continuous_Up'
+incl_datafakes_FRe_continuous_Dn : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-normdown.txt", SkipMe=True, PostFix='_fakes_FRe_continuous_Dn'
+
+# shape uncertainty (subtraction of EWK component scaled by 1sigma of cross section uncertainty, changes both shape and normalization)
+#incl_datafakes_FRe_scaleEWK_Up : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-EWKup.txt", SkipMe=True, PostFix='_fakes_FRe_scaleEWK_Up'
+#incl_datafakes_FRe_scaleEWK_Dn : + ; IncludeMca="w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt", FakeRate="w-helicity-13TeV/wmass_e/fakerate-vars/fakeRate-frdata-e-EWKdown.txt", SkipMe=True, PostFix='_fakes_FRe_scaleEWK_Dn'

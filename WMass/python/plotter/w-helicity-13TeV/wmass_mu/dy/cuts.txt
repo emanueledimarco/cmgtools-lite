@@ -1,0 +1,27 @@
+alwaystrue : 1
+## trigger selection
+## =============================================
+trigger1mu    : (HLT_BIT_HLT_IsoMu24_v > 0 || HLT_BIT_HLT_IsoTkMu24_v > 0 )
+
+## muon selection
+## =============================================
+2l            : nLepGood == 2
+mumu          : LepGood1_pdgId*LepGood2_pdgId == -169
+mumuMediumId  : LepGood1_mediumMuonId > 0 && LepGood2_mediumMuonId > 0
+mumuTightIso  : LepGood1_relIso04 < 0.15 && LepGood2_relIso04 < 0.15
+
+## kinematic selection
+## =============================================
+l1pt30        : LepGood1_calPt > 26. && LepGood1_calPt < 45. && abs(LepGood1_eta) < 2.4
+l2pt30        : LepGood2_calPt > 26. && LepGood2_calPt < 45. && abs(LepGood2_eta) < 2.4
+
+## ttbar suppression
+## =============================================
+bveto         : Sum$(Jet_Clean_pt > 25 && Jet_Clean_btagCSV > 0.60) == 0
+pfmet50max    : met_pt < 50.
+
+onlyl1fired : (LepGood1_matchedTrgObjMuPt > -1. || LepGood1_matchedTrgObjTkMuPt > -1. ) && ( LepGood2_matchedTrgObjMuPt < -1. && LepGood2_matchedTrgObjTkMuPt < -1. ) ; Disable=True
+onlyl2fired : (LepGood1_matchedTrgObjMuPt < -1. && LepGood1_matchedTrgObjTkMuPt < -1. ) && ( LepGood2_matchedTrgObjMuPt > -1. || LepGood2_matchedTrgObjTkMuPt > -1. ) ; Disable=True
+
+mll50          : mass_2(LepGood1_calPt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_calPt,LepGood2_eta,LepGood2_phi,LepGood2_mass) > 50.
+#

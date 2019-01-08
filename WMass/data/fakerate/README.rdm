@@ -1,0 +1,64 @@
+Latest fake rate file for electrons.
+
+Do not use fancy names for the file, unless you need to distinguish two files to be used in parallel.
+The nominal file should be named as written below, so we don't have to change all the txt files everytime we change the file
+
+At the moment we have variations for:
+- awayJetPt > 45 (nominal was made with 30)
+
+Each fake rate file has inside a variation of FR obtained scaling all EWK up and down by their cross section normalization uncertainty (as written in MCA files)
+
+There is another file named fakeRatenormWeight_etaPt_el.root
+This is used to apply an eta-pt-dependent normalization scaling on FR (currently only for eta: 30% in EE; 10% (20%) in EB with |eta| < (>) 1.0)
+This file is used to provide a weight on top of the usual fake rate weight
+
+=============================
+
+Last Update: 17/09/2018 20.00
+
+=============================
+
+
+ROOT FILE NAMES
+Nominal: frAndPrSmoothed_el.root
+Variation: frAndPrSmoothed_el_awayJetPt45.root
+
+Properties: 
+Subtracting all EWK MC from data (inclusive W, Z, Top, DiBosons)
+Using 35.9/fb (Full 2016)
+Using latest scale factors for electrons (applied through the following expression)
+      -W "puw2016_nTrueInt_36fb(nTrueInt)*eleSF_HLT(LepGood1_pt,LepGood1_eta)*eleSF_GSFReco(LepGood1_pt,LepGood1_eta)*eleSF_FullID(LepGood1_pt,LepGood1_eta)*eleSF_Clustering(LepGood1_pt,LepGood1_eta)"
+Fit with pol1 for both FR and PR for pt from 30 to 60 (65 for PR)
+For data, excluding points with pt in [37,50] from the fit, to avoid the region dominated by Z which induces a bump in the numerator with respect to denominator
+Also, excluding first 2 pt bins [30, 32] in data only, since the FR skimmed ntuples have a bias at low pt.
+
+File produced with:
+$CMSSW_BASE/src/CMGTools/WMass/python/plotter/utilityMacros/src/makeFakeRateGraphPlotsAndSmoothing.C
+
+#######################
+Reference plots:
+#######################
+nominal
+--------------------------
+http://mciprian.web.cern.ch/mciprian/wmass/13TeV/fake-rate/electron/FR_graphs_tests/fr_16_09_2018_eta_pt_granular_mT40_35p9fb_signedEta_subtrAllMC_allNewSF_fitPol1_minPtData32/
+--------------------------
+--------------------------
+awayJetPt > 45 (instead of 30 in nominal)
+--------------------------
+http://mciprian.web.cern.ch/mciprian/wmass/13TeV/fake-rate/electron/FR_graphs/fr_18_09_2018_eta_pt_granular_mT40_35p9fb_signedEta_subtrAllMC_allNewSF_fitPol1_minPtData32_jetPt45/
+--------------------------
+--------------------------
+Ratio:
+--------------------------
+http://mciprian.web.cern.ch/mciprian/wmass/13TeV/fake-rate/electron/ratio_FR_PR/subtrAllMC_allNewSF_fitPol1_minPtData32__jetPt30_Over_jetPt45/
+--------------------------
+
+Eta binning:
+[-2.5,-2.4,-2.3,-2.2,-2.1,-2.0,-1.9,-1.8,-1.7,-1.566,-1.4442,-1.3,-1.2,-1.1,-1.0,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4442,1.566,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5] 
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+>>>>>> PLEASE KEEP THIS FILE UPDATED <<<<<<
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

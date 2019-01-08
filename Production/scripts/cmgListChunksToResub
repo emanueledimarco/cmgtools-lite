@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # define valid options, those with trailing colon have a second argument
-OPTS=`getopt -n 'parse-options' -o hTdt:lpq:z --long help -- "$@"`
+OPTS=`getopt -n 'parse-options' -o hTdt:lpq:zf: --long help -- "$@"`
 
 if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
 
@@ -25,7 +25,8 @@ while true; do
     -t )            F="$2"; shift 2 ;;
     -l )            LOC=true; shift ;;
     -p )            P=true; shift ;;
-    -q )            Q="-q $2"; shift 2 ;;
+    -q )            Q="$Q -q $2"; shift 2 ;;
+    -f )            Q="$Q -t $2"; shift 2 ;;
     -z )            Z=true; shift ;;
     -- )            shift; break ;;
     *  )            break ;;
@@ -45,6 +46,7 @@ function help {
     echo "-l  print commands for local running instead of batch submission"
     echo "-p  check for null pck files"
     echo "-q  queue to resubmit to (use HTCondor to resubmit to HTCondor instead of LSF)"
+    echo "-f  HTCondor queue flavour (or time)"
     echo "-z  check for zombie ROOT files"
     exit 1;
 }
@@ -74,6 +76,7 @@ if [[ "$1" != "" && "$1" != "." ]]; then
     test -d $1 && cd $1 && BASE="$PWD/";
 fi
 
+JOBSTORESUB=()
 $TERSE || echo "# Will print out the commands to resubmit the chunks that failed "
 for D in */; do
     if [ ! -f "$D/config.pck" ]; then
@@ -88,13 +91,15 @@ for D in */; do
     if test \! -s $D/$F || $PCKBAD; then
         # check for batch directory if requested or proceed to command printout
         if [ "${LSFL}" = false ] || find $D -maxdepth 1 -type d -name 'LSFJOB_*'  -or -name 'condor_job*.out' -not -empty | grep -q . || test -f $D/submission_failed ; then
+            cmd="cmgResubChunk $Q ${BASE}${D}";
             if $LOC; then
-                # print local command
-                echo "cmgRunChunkLocally ${BASE}${D} ";
-	        else
-                # print batch command
-		        echo "cmgResubChunk $Q ${BASE}${D} ";
+                cmd="cmgRunChunkLocally ${BASE}${D}";
+	    fi
+            reason="missing"
+            if $PCKBAD; then
+                reason="bad pck"
             fi
+            JOBSTORESUB+=("${cmd}     #${reason}")
         else
             $TERSE || echo "# Chunk ${BASE}${D} does not have a LSFJOB directory, maybe still running? ";
         fi;
@@ -106,11 +111,19 @@ if $Z; then
     for ZOMBIE in $(cmgListZombies  "*/$F"); do
         if test -s $ZOMBIE; then # empty files have already been found
             D=${ZOMBIE%%/*};
+            cmd="cmgResubChunk $Q ${BASE}${D}";
             if $LOC; then
                 echo "cmgRunChunkLocally ${BASE}${D}     # zombie";
             else
                 echo "cmgResubChunk $Q ${BASE}${D}    # zombie";
             fi
+            JOBSTORESUB+=("${cmd}     #is zombie")
         fi;
     done
 fi;
+
+for ((i = 0; i < ${#JOBSTORESUB[@]}; i++))
+do
+    echo ${JOBSTORESUB[$i]};
+done
+

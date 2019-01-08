@@ -1,0 +1,5 @@
+cut-change: LepGood1_customId: 1
+cut-change: LepGood1_tightChargeFix: 2
+load-histo: FR_el_i8 : $DATA/fakerate/frAndPrSmoothed_el.root : frSmoothParameter_data_subScaledUpEWKMC
+load-histo: PR_el_i8 : $DATA/fakerate/frAndPrSmoothed_el.root : frSmoothParameter_ewk
+weight: fakeRateWeight_promptRateCorr_1l_i_smoothed(ptElFull(LepGood1_calPt,LepGood1_eta),LepGood1_eta,LepGood1_pdgId,LepGood1_customId && LepGood1_tightChargeFix == 2,8,8)

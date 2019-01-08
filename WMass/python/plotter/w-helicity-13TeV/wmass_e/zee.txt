@@ -1,0 +1,16 @@
+# Z->ee skim criteria (applied when running on skim)
+alwaystrue: 1
+trigger: (LepGood1_matchedTrgObjElePt>-1 || LepGood2_matchedTrgObjElePt>-1)
+two electrons: nLepGood==2 && abs(LepGood1_pdgId)==11 && LepGood1_pdgId == -LepGood2_pdgId
+fiducial: (abs(LepGood1_eta)<1.4442 || abs(LepGood1_eta)>1.566) && (abs(LepGood2_eta)<1.4442 || abs(LepGood2_eta)>1.566)
+el acceptance:  ptElFull(LepGood1_calPt,LepGood1_eta) > 30 && ptElFull(LepGood2_calPt,LepGood2_eta) > 30 && abs(LepGood1_eta)<2.5 && abs(LepGood2_eta)<2.5
+ptmax: ptElFull(LepGood1_calPt,LepGood1_eta) < 45 && ptElFull(LepGood2_calPt,LepGood2_eta) < 45
+HLT ID: LepGood1_hltId + LepGood2_hltId == 2
+numSel : LepGood1_customId + LepGood2_customId == 2
+tightCharge : LepGood1_tightChargeFix == 2 && LepGood2_tightChargeFix == 2
+#ptmax: ptElFull(LepGood1_calPt,LepGood1_eta) < 55
+#HLT ID: LepGood1_hltId == 1
+#numSel : LepGood1_customId == 1
+#tightCharge : LepGood1_tightChargeFix == 2
+inv mass: abs(mass_2(ptElFull(LepGood1_calPt,LepGood1_eta),LepGood1_eta,LepGood1_phi,0.5e-3,ptElFull(LepGood2_calPt,LepGood1_eta),LepGood2_eta,LepGood2_phi,0.5e-3)-91.2) < 20
+# additional criteria

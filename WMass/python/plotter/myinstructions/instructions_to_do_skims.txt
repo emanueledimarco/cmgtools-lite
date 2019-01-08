@@ -1,0 +1,53 @@
+use the script w-helicity-13TeV/skims.py as:
+python w-helicity-13TeV/skims.py <args> [OPTIONS]
+
+Arguments:
+a) an mca file, e.g. w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt
+b) a cut file with the selections of the skim, e.g. w-helicity-13TeV/wmass_e/skim_wenu.txt
+c) path to trees to be skimmed, e.g. /eos/cms/store/group/dpg_ecal/comm_ecal/localreco/TREES_1LEP_80X_V3/ (can use a symbolic link pointing to the folder)
+d) output folder of the skimmed trees
+
+Options typically used:
+-->  -f w-helicity-13TeV/wmass_e/varsSkim_80X.txt -q 8nh --log skim_w_legacy
+-f takes a file with the variables to be kept (not only we cut events, but also variables)
+-q select the batch queue (it means the command is run in batch
+--log takes the name of a folder to store the log files of the command run in batch
+--pretend prints the command to submit jobs, but do not actually submit them
+
+--------------------------
+EXAMPLE:
+arguments, mca files and options are just put as a consistent example, you should change them according to your needs
+--------------------------
+python w-helicity-13TeV/skims.py w-helicity-13TeV/wmass_e/mca-includes/mca-data-legacy2016.txt w-helicity-13TeV/wmass_e/skim_wenu.txt /eos/cms/store/group/dpg_ecal/comm_ecal/localreco/TREES_1LEP_80X_V3 /eos/cms/store/group/dpg_ecal/comm_ecal/localreco/Legacy2016_WENUSKIM_V4 -f w-helicity-13TeV/wmass_e/varsSkim_80X.txt -q 8nh --log skim_w_legacy
+
+
+# main trees
+#
+## use option --pretend if you just want to see the commands to submit the jobs
+# W signal is in /eos/cms/store/cmst3/group/wmass/w-helicity-13TeV/ntuplesRecoil/TREES_SIGNAL_1l_recoil_fullTrees/ (since October 2018)
+# the rest can be taken from /eos/cms/store/group/dpg_ecal/comm_ecal/localreco/TREES_1LEP_80X_V3 (to check)
+
+# from 31 July 2018, use this updated MCA: mca-80X-skimsFR_31July2018.txt
+# use this selection: w-helicity-13TeV/wmass_e/skim_fr_el_new.txt
+
+# examples for FR skims (mca-80X-skimsFR_31July2018.txt must be edited to use only signal or only the rest)
+
+#Signal 
+python  w-helicity-13TeV/skims.py w-helicity-13TeV/wmass_e/mca-80X-skimsFR_31July2018.txt w-helicity-13TeV/wmass_e/skim_fr_el_new.txt /eos/cms/store/cmst3/group/wmass/w-helicity-13TeV/ntuplesRecoil/TREES_SIGNAL_1l_recoil_fullTrees/ /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_FRELSKIM_V9_SIGNAL -f w-helicity-13TeV/wmass_e/varsSkim_80X_fr_new.txt --main-only -q cmscaf1nd --log logs_FRskim_01Nov2018 --pretend
+
+# signal friends
+python w-helicity-13TeV/skims.py w-helicity-13TeV/wmass_e/mca-80X-skimsFR_31July2018.txt w-helicity-13TeV/wmass_e/skim_fr_el_new.txt /eos/cms/store/cmst3/group/wmass/w-helicity-13TeV/ntuplesRecoil/TREES_SIGNAL_1l_recoil_fullTrees/ /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_FRELSKIM_V9_SIGNAL  -f w-helicity-13TeV/wmass_e/varsSkim_80X_fr_new_friends.txt --fo -q cmscaf1nd --log logs_friends_FRskim_01Nov2018 
+
+
+# other samples
+python  w-helicity-13TeV/skims.py w-helicity-13TeV/wmass_e/mca-80X-skimsFR_31July2018.txt w-helicity-13TeV/wmass_e/skim_fr_el_new.txt /eos/cms/store/cmst3/group/wmass/w-helicity-13TeV/trees/TREES_1LEP_80X_V3_MC /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_FRELSKIM_V9_dataAndBkg -f w-helicity-13TeV/wmass_e/varsSkim_80X_fr_new.txt --main-only -q cmscaf1nd --log logs_FRskim_01Nov2018_dataAndBkg  --pretend
+
+# other samples friends
+python  w-helicity-13TeV/skims.py w-helicity-13TeV/wmass_e/mca-80X-skimsFR_31July2018.txt w-helicity-13TeV/wmass_e/skim_fr_el_new.txt /eos/cms/store/cmst3/group/wmass/w-helicity-13TeV/trees/TREES_1LEP_80X_V3_MC /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_FRELSKIM_V9_dataAndBkg -f w-helicity-13TeV/wmass_e/varsSkim_80X_fr_new_friends.txt --fo -q cmscaf1nd --log logs_friends_FRskim_01Nov2018_dataAndBkg  --pretend
+
+
+# signal skim full sel (from W->enu skim)
+python  w-helicity-13TeV/skims.py w-helicity-13TeV/wmass_e/mca-80X-skims_W.txt w-helicity-13TeV/wmass_e/wenu-80X-skim_fullsel.txt /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_WSKIM_NEW/ /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_SIGSKIM_WENU_FULLSEL_NOMT -f w-helicity-13TeV/wmass_e/skimming/varsSkim_80X_helicity.txt --main-only -q cmscaf1nd --log logs_Wskim_12Nov2018 --pretend
+
+# friends (vars can be the same as for DY)
+python  w-helicity-13TeV/skims.py w-helicity-13TeV/wmass_e/mca-80X-skims_W.txt w-helicity-13TeV/wmass_e/wenu-80X-skim_fullsel.txt /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_WSKIM_NEW/ /eos/cms/store/cmst3/group/wmass/mciprian/TREES_1LEP_80X_V3_SIGSKIM_WENU_FULLSEL_NOMT -f w-helicity-13TeV/wmass_e/varsSkim_80X_DY_sig_friends.txt --fo -q cmscaf1nd --log logs_friends_Wskim_12Nov2018 --pretend

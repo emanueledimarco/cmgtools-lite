@@ -1,0 +1,2 @@
+# signal from the weighted uncut sample should not be skimmed
+W    : WJetsToLNu_NLO* : 3.*20508.9  ; FillColor=ROOT.kGray+1   , Label="W"
